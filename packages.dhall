@@ -114,8 +114,68 @@ let mkPackage =
 let upstream =
       https://raw.githubusercontent.com/purescript/package-sets/psc-0.12.3-20190315/src/packages.dhall sha256:08714bc666b16834f0f4cf86d408745ce005c43e3343821e4c3864ef28709177
 
-let overrides = {=}
+let overrides =
+  { argonaut-codecs =
+      upstream.argonaut-codecs // { version = "v6.0.2" }
+  , contravariant =
+      upstream.contravariant // { version = "v4.0.1" }
+  , lists =
+      upstream.lists // { version = "v5.4.1" }
+  , ordered-collections =
+      upstream.ordered-collections // { version = "v1.6.1" }
+  }
 
-let additions = {=}
+let additions =
+  { lens =
+      mkPackage
+        [ "const"
+        , "distributive"
+        , "profunctor"
+        ]
+        "https://github.com/purescript-contrib/purescript-lens.git"
+        "v4.0.0"
+  , precise-datetime =
+      mkPackage
+        [ "arrays"
+        , "console"
+        , "datetime"
+        , "decimals"
+        , "either"
+        , "enums"
+        , "foldable-traversable"
+        , "formatters"
+        , "integers"
+        , "js-date"
+        , "lists"
+        , "maybe"
+        , "newtype"
+        , "numbers"
+        , "prelude"
+        , "strings"
+        , "tuples"
+        , "unicode"
+        ]
+        "https://github.com/awakesecurity/purescript-precise-datetime.git"
+        "v5.1.1"
+  , slug =
+      mkPackage
+        [ "argonaut-codecs"
+        , "generics-rep"
+        , "maybe"
+        , "prelude"
+        , "strings"
+        , "unicode"
+        ]
+        "https://github.com/thomashoneyman/purescript-slug.git"
+        "v1.0.0"
+  , typelevel-eval =
+      mkPackage
+        [ "prelude"
+        , "tuples"
+        , "typelevel-prelude"
+        ]
+        "https://github.com/natefaubion/purescript-typelevel-eval.git"
+        "v0.2.0"
+  }
 
 in  upstream // overrides // additions
