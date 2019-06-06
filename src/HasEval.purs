@@ -1,5 +1,5 @@
-module Control.Restricted.Eval
-  ( class Eval
+module Control.Restricted.HasEval
+  ( class HasEval
   , eval
   ) where
 
@@ -10,7 +10,7 @@ import Record.Builder (Builder)
 import Record.Builder (build) as Builder
 import Unsafe.Coerce (unsafeCoerce)
 
-class Closed c <= Eval (c :: Type -> Type -> Type) where
+class Closed c <= HasEval (c :: Type -> Type -> Type) where
   eval
     :: forall v0 v1
      . ObjectOf c v0
@@ -20,10 +20,10 @@ class Closed c <= Eval (c :: Type -> Type -> Type) where
     -> v0
     -> v1
 
-instance closedMonoidalFn :: Eval Function where
+instance closedMonoidalFn :: HasEval Function where
   eval = Function.apply
 
-instance closedMonoidalBuilder :: Eval Builder where
+instance closedMonoidalBuilder :: HasEval Builder where
   eval builder record = coerceBuild Builder.build builder record
     where
     coerceBuild

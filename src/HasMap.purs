@@ -4,7 +4,7 @@ module Control.Restricted.HasMap
   , mapFlipped , (<#>)
   ) where
 
-import Control.Restricted.Eval (class Eval, eval)
+import Control.Restricted.HasEval (class HasEval, eval)
 import Control.Restricted.ObjectOf (class ObjectOf, class OperatorOf)
 import Control.Restricted.Restrict (class Restrict, restrict)
 import Data.Functor (class Functor, map) as Unrestricted
@@ -49,7 +49,7 @@ infixl 1 mapFlipped as <#>
 
 flap
   :: forall c f v0 v1
-   . Eval c
+   . HasEval c
   => HasMap c f
   => ObjectOf c v0
   => ObjectOf c v1
