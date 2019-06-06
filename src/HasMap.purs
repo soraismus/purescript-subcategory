@@ -6,6 +6,10 @@ module Control.Restricted.HasMap
 
 import Data.Identity (Identity(Identity))
 import Type.Proxy (Proxy3(Proxy3))
+import Record.Builder (Builder)
+import Record.Builder (build, insert) as Builder
+import Data.Either (Either(Left, Right))
+import Data.Symbol (SProxy(SProxy))
 
 import Data.Unit (Unit)
 import Data.Unit (unit) as Unit
@@ -58,69 +62,6 @@ mapFlipped fa f = f <$> fa
 
 infixl 1 mapFlipped as <#>
 
--- #1 compiles but #0 does not.
--- 0. -- type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => u }
--- 1. -- type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => Unit -> u }
-type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => Unit -> u }
-
-void
-  :: forall c f u v
-   . HasConst c
-  => HasMap c f
-  => HasUnit c u
-  => ObjectOf c u
-  => ObjectOf c v
-  => DictHasUnit c u
-  -> f v
-  -> f u
--- 0. -- void dictHasUnit = dictHasMap.map (const dictHasUnit.unit)
--- 1. -- void dictHasUnit = dictHasMap.map (const (dictHasUnit.unit Unit.unit))
-void dictHasUnit = dictHasMap.map (const (dictHasUnit.unit Unit.unit))
-  where
-  dictHasMap :: DictHasMap c f
-  dictHasMap = { map: map }
-
-type DictHasConst c =
-  { const
-      :: forall v0 v1
-       . ObjectOf c v0
-      => ObjectOf c v1
-      => v0
-      -> c v1 v0
-  }
-
-voidLeft
-  :: forall c f v0 v1
-   . HasConst c
-  => HasMap c f
-  => ObjectOf c v0
-  => ObjectOf c v1
-  => Proxy3 c
-  -> f v0
-  -> v1
-  -> f v1
-voidLeft _ f x = dictHasMap.map (dictHasConst.const x) f
-  where
-  dictHasConst :: DictHasConst c
-  dictHasConst = { const: const }
-  dictHasMap :: DictHasMap c f
-  dictHasMap = { map: map }
-
-x :: Identity Int
-x = voidLeft (Proxy3 :: Proxy3 Function) (Identity 0) 5
-
--- voidRight
---   :: forall c f v0 v1
---    . HasConst c
---   => HasMap c f
---   => ObjectOf c v0
---   => ObjectOf c v1
---   => v0
---   -> f v1
---   -> f v0
--- voidRight x = map (const x)
--- infixl 4 voidRight as <$
-
 flap
   :: forall c f p v0 v1
    . HasDimap c p
@@ -142,8 +83,22 @@ flap ff x =
 
 infixl 4 flap as <@>
 
-instance functorUnrestricted
+type Ba0 = Builder {} { a0 :: Int }
+insert_a0_0 :: Ba0
+insert_a0_0 = Builder.insert (SProxy :: SProxy "a0") 0
+
+type E_Ba0 = Either {} Ba0
+-- x :: E_Ba0
+-- x = flap (Left {} :: E_Ba0)
+
+instance hasMapUnrestricted
   :: Unrestricted.Functor f
   => HasMap Function f
   where
   map = Unrestricted.map
+
+instance hasMapBuilderEither
+  :: HasMap Builder (Either r)
+  where
+  map builder (Left r) = Left r
+  map builder (Right x) = Right (eval builder x)
