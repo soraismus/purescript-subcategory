@@ -4,26 +4,16 @@ module Control.Restricted.HasMap
   , mapFlipped , (<#>)
   ) where
 
-import Data.Identity (Identity(Identity))
-import Type.Proxy (Proxy3(Proxy3))
 import Record.Builder (Builder)
-import Record.Builder (build, insert) as Builder
-import Data.Either (Either(Left, Right))
+import Record.Builder (insert) as Builder
 import Data.Symbol (SProxy(SProxy))
 
-import Data.Unit (Unit)
-import Data.Unit (unit) as Unit
-
 import Control.Restricted.Eval (class Eval, eval)
-import Control.Restricted.HasConst (class HasConst, const)
-import Control.Restricted.HasDimap (class HasDimap)
--- import Control.Restricted.HasIdentity (class HasIdentity, identity)
-import Control.Restricted.HasIdentity (class HasIdentity)
-import Control.Restricted.HasUnit (class HasUnit, unit)
-import Control.Restricted.HasUnit (class HasUnit)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Control.Restricted.Restrict (class Restrict, restrict)
+import Data.Either (Either(Left, Right))
 import Data.Functor (class Functor, map) as Unrestricted
+import Data.Tuple (Tuple(Tuple))
 
 class HasMap
   (c :: Type -> Type -> Type)
@@ -85,12 +75,10 @@ type Ba0 = Builder {} { a0 :: Int }
 insert_a0_0 :: Ba0
 insert_a0_0 = Builder.insert (SProxy :: SProxy "a0") 0
 type E_Ba0 = Either {} Ba0
--- x0 :: E_Ba0
--- x0 = flap (Left {} :: E_Ba0) {}
 e0 :: E_Ba0
 e0 = Left {}
--- x1 :: Either {} { a0 :: Int }
--- x1 = e0 <@> {}
+x1 :: Either {} { a0 :: Int }
+x1 = e0 <@> {}
 e1 :: E_Ba0
 e1 = Right insert_a0_0
 x2 :: Either {} { a0 :: Int }
@@ -102,8 +90,9 @@ instance hasMapUnrestricted
   where
   map = Unrestricted.map
 
-instance hasMapBuilderEither
-  :: HasMap Builder (Either r)
-  where
+instance hasMapBuilderEither :: HasMap Builder (Either a) where
   map builder (Left r) = Left r
-  map builder (Right x) = Right (eval builder x)
+  map builder (Right r) = Right (eval builder r)
+
+instance hasMapBuilderTuple :: HasMap Builder (Tuple a) where
+  map builder (Tuple x y) = Tuple x (eval builder y)
