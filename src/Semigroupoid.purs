@@ -2,8 +2,7 @@ module Control.Restricted.Semigroupoid
   ( class Semigroupoid
   , compose        , (<<<)
   , composeFlipped , (>>>)
-  )
-  where
+  ) where
 
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Control.Semigroupoid (compose) as Unrestricted

@@ -1,4 +1,4 @@
-module Control.Restricted.Identity
+module Control.Restricted.HasIdentity
   ( class HasIdentity
   , identity
   ) where

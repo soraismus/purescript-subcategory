@@ -34,32 +34,18 @@ class UnitOf
   (u :: Type)
 
 class
-  ( Category c
-  , Closed c
---   , TensorOf c t
---   , UnitOf c u
-  )
-  <= Eval
-      (c :: Type -> Type -> Type)
---       (t :: Type -> Type -> Type)
---       (u :: Type)
-  where
---   curry
---     :: forall v0 v1 v2
---      . ObjectOf c v0
---     => ObjectOf c v1
---     => ObjectOf c v2
---     => c (t v0 v1) v2
---     -> c v0 (c v1 v2)
-  eval
-    :: forall v0 v1
-     . ObjectOf c v0
-    => ObjectOf c v1
-    => ObjectOf c (c v0 v1)
-    -- => c (t (c v0 v1) v0) v1
-    => (c v0 v1)
-    -> v0
-    -> v1
+  Category c
+    <= Eval
+        (c :: Type -> Type -> Type)
+        where
+        eval
+          :: forall v0 v1
+          . ObjectOf c v0
+          => ObjectOf c v1
+          => ObjectOf c (c v0 v1)
+          => (c v0 v1)
+          -> v0
+          -> v1
 
 -- class (Category_ p, Profunctor_ p) <= Eval p where
 --   eval :: forall a b. ObjectOf p a => ObjectOf p b => p a b -> a -> b
