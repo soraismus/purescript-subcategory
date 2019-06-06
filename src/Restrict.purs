@@ -3,6 +3,8 @@ module Control.Restricted.Restrict
   , restrict
   ) where
 
+import Prelude (identity)
+
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)
@@ -26,3 +28,6 @@ instance restrictFnBuilder :: Restrict Function Builder where
     => (v0 -> v1)
     -> Builder v0 v1
   restrict = unsafeCoerce
+
+instance restrictFnFn :: Restrict Function Function where
+  restrict = identity

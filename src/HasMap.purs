@@ -4,6 +4,9 @@ module Control.Restricted.HasMap
   , mapFlipped , (<#>)
   ) where
 
+import Data.Identity (Identity(Identity))
+import Type.Proxy (Proxy3(Proxy3))
+
 import Data.Unit (Unit)
 import Data.Unit (unit) as Unit
 
@@ -76,21 +79,35 @@ void dictHasUnit = dictHasMap.map (const (dictHasUnit.unit Unit.unit))
   where
   dictHasMap :: DictHasMap c f
   dictHasMap = { map: map }
-  dictHasUnit' :: DictHasUnit c u
-  dictHasUnit' = { unit: \_ -> unit }
-    -- No instance found for `HasUnit t1 u0`. Therefore, the category is unknown.
 
--- voidLeft
---   :: forall c f v0 v1
---    . HasConst c
---   => HasMap c f
---   => ObjectOf c v0
---   => ObjectOf c v1
---   => f v0
---   -> v1
---   -> f v1
--- voidLeft f x = const x <$> f
--- infixl 4 voidLeft as $>
+type DictHasConst c =
+  { const
+      :: forall v0 v1
+       . ObjectOf c v0
+      => ObjectOf c v1
+      => v0
+      -> c v1 v0
+  }
+
+voidLeft
+  :: forall c f v0 v1
+   . HasConst c
+  => HasMap c f
+  => ObjectOf c v0
+  => ObjectOf c v1
+  => Proxy3 c
+  -> f v0
+  -> v1
+  -> f v1
+voidLeft _ f x = dictHasMap.map (dictHasConst.const x) f
+  where
+  dictHasConst :: DictHasConst c
+  dictHasConst = { const: const }
+  dictHasMap :: DictHasMap c f
+  dictHasMap = { map: map }
+
+x :: Identity Int
+x = voidLeft (Proxy3 :: Proxy3 Function) (Identity 0) 5
 
 -- voidRight
 --   :: forall c f v0 v1
