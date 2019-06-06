@@ -4,16 +4,11 @@ module Control.Restricted.HasMap
   , mapFlipped , (<#>)
   ) where
 
-import Record.Builder (Builder)
-import Record.Builder (insert) as Builder
-import Data.Symbol (SProxy(SProxy))
-
 import Control.Restricted.Eval (class Eval, eval)
-import Control.Restricted.ObjectOf (class ObjectOf, class TypeOperatorOf)
+import Control.Restricted.ObjectOf (class ObjectOf, class OperatorOf)
 import Control.Restricted.Restrict (class Restrict, restrict)
-import Data.Either (Either(Left, Right))
 import Data.Functor (class Functor, map) as Unrestricted
-import Data.Tuple (Tuple(Tuple))
+import Record.Builder (Builder)
 
 class HasMap
   (c :: Type -> Type -> Type)
@@ -71,23 +66,6 @@ flap ff x =
 
 infixl 4 flap as <@>
 
-type Ba0 = Builder {} { a0 :: Int }
-insert_a0_0 :: Ba0
-insert_a0_0 = Builder.insert (SProxy :: SProxy "a0") 0
-type E_Ba0 = Either {} Ba0
-e0 :: E_Ba0
-e0 = Left {}
-x1 :: Either {} { a0 :: Int }
-x1 = e0 <@> {}
-e1 :: E_Ba0
-e1 = Right insert_a0_0
-x2 :: Either {} { a0 :: Int }
-x2 = e1 <@> {}
-x3 :: Tuple { b5 :: Int } Ba0
-x3 = Tuple { b5: 5 } insert_a0_0
-x4 :: Tuple { b5 :: Int } { a0 :: Int }
-x4 = x3 <@> {}
-
 instance hasMapUnrestricted
   :: Unrestricted.Functor f
   => HasMap Function f
@@ -96,7 +74,7 @@ instance hasMapUnrestricted
 
 instance hasMapBuilder
   :: ( Unrestricted.Functor f
-     , TypeOperatorOf Builder f
+     , OperatorOf Builder f
      )
   => HasMap Builder f
   where

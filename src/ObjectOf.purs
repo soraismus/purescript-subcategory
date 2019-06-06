@@ -1,6 +1,6 @@
 module Control.Restricted.ObjectOf
   ( class ObjectOf
-  , class TypeOperatorOf
+  , class OperatorOf
   ) where
 
 import Data.Either (Either)
@@ -10,24 +10,24 @@ import Record.Builder (Builder)
 
 class ObjectOf (p :: Type -> Type -> Type) (a :: Type)
 
-class TypeOperatorOf (p :: Type -> Type -> Type) (a :: Type -> Type)
+class OperatorOf (p :: Type -> Type -> Type) (a :: Type -> Type)
 
 instance objectOfFn :: ObjectOf Function a
-instance typeOperatorOfFn :: TypeOperatorOf Function a
+instance typeOperatorOfFn :: OperatorOf Function a
 
 instance objectOfBuilderVoid :: ObjectOf Builder Void
 instance objectOfBuilderRecord :: ObjectOf Builder (Record r)
 else instance objectOfBuilderTypeOperator
   :: ( ObjectOf Builder a
-     , TypeOperatorOf Builder f
+     , OperatorOf Builder f
      )
   => ObjectOf Builder (f a)
 instance typeOperatorOfBuilderBuilder
   :: ObjectOf Builder a
-  => TypeOperatorOf Builder (Builder a)
+  => OperatorOf Builder (Builder a)
 instance typeOperatorOfBuilderEither
   :: ObjectOf Builder a
-  => TypeOperatorOf Builder (Either a)
+  => OperatorOf Builder (Either a)
 instance typeOperatorOfBuilderTuple
   :: ObjectOf Builder a
-  => TypeOperatorOf Builder (Tuple a)
+  => OperatorOf Builder (Tuple a)
