@@ -4,6 +4,9 @@ module Control.Restricted.HasMap
   , mapFlipped , (<#>)
   ) where
 
+import Data.Unit (Unit)
+import Data.Unit (unit) as Unit
+
 import Control.Restricted.Eval (class Eval, eval)
 import Control.Restricted.HasConst (class HasConst, const)
 import Control.Restricted.HasDimap (class HasDimap, arr)
@@ -50,7 +53,11 @@ mapFlipped fa f = f <$> fa
 
 infixl 1 mapFlipped as <#>
 
-type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => u }
+-- type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => u }
+-- type DictHasUnit c u = { unit :: ObjectOf c u => u }
+-- type DictHasUnit c u = { unit :: HasUnit c u => u }
+-- type DictHasUnit c u = { unit :: HasUnit c u => Unit -> u }
+type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => Unit -> u }
 
 void
   :: forall c f u v
@@ -58,14 +65,28 @@ void
   => HasMap c f
   => HasUnit c u
   => ObjectOf c v
-  => f v
+  => DictHasUnit c u
+  -> f v
   -> f u
-void = dictHasMap.map (const dictHasUnit.unit)
+void dictHasUnit = dictHasMap.map (const (dictHasUnit.unit Unit.unit))
   where
   dictHasMap :: DictHasMap c f
   dictHasMap = { map: map }
-  dictHasUnit :: DictHasUnit c u
-  dictHasUnit = { unit: unit }
+
+-- void
+--   :: forall c f u v
+--    . HasConst c
+--   => HasMap c f
+--   => HasUnit c u
+--   => ObjectOf c v
+--   => f v
+--   -> f u
+-- void = dictHasMap.map (const (dictHasUnit.unit Unit.unit))
+--   where
+--   dictHasMap :: DictHasMap c f
+--   dictHasMap = { map: map }
+--   dictHasUnit :: DictHasUnit c u
+--   dictHasUnit = { unit: \_ -> unit }
 
 -- voidLeft
 --   :: forall c f v0 v1
