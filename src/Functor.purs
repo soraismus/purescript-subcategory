@@ -8,16 +8,15 @@ module Control.Restricted.Functor
 --   , voidRight  , (<$)
   ) where
 
-import Control.Restricted.HasConst (class HasConst, const)
-import Control.Restricted.HasUnit (class HasUnit, unit)
-
 import Control.Restricted.Category (class Category)
-import Control.Restricted.HasIdentity (class HasIdentity, identity)
+-- import Control.Restricted.HasConst (class HasConst, const)
+-- import Control.Restricted.HasUnit (class HasUnit, unit)
 import Control.Restricted.ObjectOf (class ObjectOf)
-import Control.Restricted.Semigroupoid ((>>>))
-import Data.Functor as Unrestricted
-import Data.Newtype (class Newtype, wrap, unwrap)
-import Data.Profunctor (class Profunctor, dimap) as Unrestricted
+-- import Control.Restricted.Semigroupoid ((>>>))
+
+import Data.Functor (class Functor, map) as Unrestricted
+-- import Data.Newtype (class Newtype, wrap, unwrap)
+-- import Data.Profunctor (class Profunctor, dimap) as Unrestricted
 
 class
   Category c
