@@ -97,29 +97,49 @@ infixl 1 mapFlipped as <#>
 type HasMap_ c f =
   { map
       :: forall v0 v1
-       . ObjectOf c v0
+       . HasMap c f
+      => ObjectOf c v0
       => ObjectOf c v1
       => c v0 v1
       -> f v0
       -> f v1
   }
 
+-- flap
+--   :: forall c f p v0 v1
+--    . HasDimap c p
+--   => Eval c
+--   => HasIdentity p
+--   => HasMap c f
+--   => ObjectOf c v0
+--   => ObjectOf c v1
+--   => ObjectOf c (c v0 v1)
+--   => Restrict Function c
+--   => f (c v0 v1)
+--   -> v0
+--   -> f v1
+-- flap ff x =
+--   map (restrict (\f -> eval f x)) ff
+
 flap
   :: forall c f p v0 v1
    . HasDimap c p
   => Eval c
   => HasIdentity p
-  -- => HasMap c f
+  => HasMap c f
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (c v0 v1)
   => Restrict Function c
-  => HasMap_ c f
-  -> f (c v0 v1)
+  => f (c v0 v1)
   -> v0
   -> f v1
-flap { map } ff x =
-  map (restrict (\f -> eval f x)) ff
+flap ff x =
+  map' (restrict (\f -> eval f x)) ff
+  where
+  dictionary :: HasMap_ c f
+  dictionary = { map: map }
+  map' = dictionary.map
 
 instance functorUnrestricted
   :: Unrestricted.Functor f
