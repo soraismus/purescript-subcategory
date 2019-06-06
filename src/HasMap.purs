@@ -4,6 +4,8 @@ module Control.Restricted.HasMap
   , mapFlipped , (<#>)
   ) where
 
+import Control.Restricted.Closed (class Closed, assertClosed)
+
 import Record.Builder (Builder)
 import Record.Builder (insert) as Builder
 import Data.Symbol (SProxy(SProxy))
@@ -92,14 +94,18 @@ x2 = e1 <@> {}
 --   where
 --   map = Unrestricted.map
 
-class Closed (c :: Type -> Type -> Type) where
-  assertClosed :: forall v0 v1. ObjectOf c (c v0 v1) => Unit
-
-instance closedFn :: Closed Function where
-  assertClosed = Unit.unit
-
-instance closedBuilder :: Closed Builder where
-  assertClosed = Unit.unit
+instance hasMapBuilder
+  :: ( Unrestricted.Functor f
+     , Eval c
+     )
+  => HasMap c f
+  where
+  map f = proveFirst proof (Unrestricted.map (eval f))
+    where
+    proof :: Closed c => Unit
+    proof = assertClosed
+    proveFirst :: forall a b. a -> b -> b
+    proveFirst _ x = x
 
 -- instance hasMapBuilder
 --   :: ( Unrestricted.Functor f
@@ -109,17 +115,6 @@ instance closedBuilder :: Closed Builder where
 --   => HasMap c f
 --   where
 --   map f = Unrestricted.map (eval f)
---     where
---     proof :: Closed c => Unit
---     proof = assertClosed
-
-instance hasMapBuilder
-  :: ( Unrestricted.Functor f
-     , Eval c
-     )
-  => HasMap c f
-  where
-  map f = Unrestricted.map (eval f)
 
 -- instance hasMapBuilderEither :: HasMap Builder (Either a) where
 --   map builder = Unrestricted.map (eval builder)

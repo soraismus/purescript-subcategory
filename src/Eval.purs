@@ -3,13 +3,14 @@ module Control.Restricted.Eval
   , eval
   ) where
 
+import Control.Restricted.Closed (class Closed)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Data.Function (apply) as Function
 import Record.Builder (Builder)
 import Record.Builder (build) as Builder
 import Unsafe.Coerce (unsafeCoerce)
 
-class Eval (c :: Type -> Type -> Type) where
+class Closed c <= Eval (c :: Type -> Type -> Type) where
   eval
     :: forall v0 v1
      . ObjectOf c v0

@@ -6,6 +6,7 @@ module Control.Restricted.Closed
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Data.Unit (Unit)
 import Data.Unit (unit) as Unit
+import Record.Builder (Builder)
 
 class Closed (c :: Type -> Type -> Type) where
   assertClosed :: forall v0 v1. ObjectOf c (c v0 v1) => Unit
