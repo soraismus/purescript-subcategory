@@ -1,4 +1,4 @@
-module Control.Subcategories.Profunctor
+module Control.Subcategory.Profunctor
   ( class Profunctor
   , arr
   , dimap
@@ -8,10 +8,10 @@ module Control.Subcategories.Profunctor
   , wrapIso
   ) where
 
-import Control.Subcategories.Category (class Category)
-import Control.Subcategories.Identity (class Identity, identity)
-import Control.Subcategories.ObjectOf (class ObjectOf)
-import Control.Subcategories.Semigroupoid ((>>>))
+import Control.Subcategory.Category (class Category)
+import Control.Subcategory.Identity (class Identity, identity)
+import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Semigroupoid ((>>>))
 import Data.Newtype (class Newtype, wrap, unwrap)
 import Record.Builder (Builder)
 

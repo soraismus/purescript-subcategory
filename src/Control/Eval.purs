@@ -1,4 +1,4 @@
-module Control.Subcategories.Eval
+module Control.Subcategory.Eval
   (
     class Closed
   , class Eval
@@ -8,8 +8,8 @@ module Control.Subcategories.Eval
 
 import Prelude (Unit, unit)
 
-import Control.Subcategories.ObjectOf (class ObjectOf)
-import Control.Subcategories.Category (class Category)
+import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Category (class Category)
 import Data.Function (apply) as Function
 import Record.Builder (Builder)
 import Record.Builder (build) as Builder

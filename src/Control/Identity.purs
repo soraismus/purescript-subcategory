@@ -1,10 +1,10 @@
-module Control.Subcategories.Identity
+module Control.Subcategory.Identity
   ( class Identity
   , identity
   ) where
 
 import Control.Category (identity) as Super
-import Control.Subcategories.ObjectOf (class ObjectOf)
+import Control.Subcategory.ObjectOf (class ObjectOf)
 import Record.Builder (Builder)
 
 class Identity (p :: Type -> Type -> Type) where

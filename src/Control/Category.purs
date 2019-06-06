@@ -1,4 +1,4 @@
-module Control.Subcategories.Category
+module Control.Subcategory.Category
   ( class Category
   , assertIdentity
   , assertSemigroupoid
@@ -7,8 +7,8 @@ module Control.Subcategories.Category
 
 import Prelude (Unit, unit)
 
-import Control.Subcategories.Identity (class Identity)
-import Control.Subcategories.Semigroupoid (class Semigroupoid)
+import Control.Subcategory.Identity (class Identity)
+import Control.Subcategory.Semigroupoid (class Semigroupoid)
 import Record.Builder (Builder)
 
 class Category (p :: Type -> Type -> Type) where

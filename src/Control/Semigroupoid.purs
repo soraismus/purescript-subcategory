@@ -1,11 +1,11 @@
-module Control.Subcategories.Semigroupoid
+module Control.Subcategory.Semigroupoid
   ( class Semigroupoid
   , compose        , (<<<)
   , composeFlipped , (>>>)
   )
   where
 
-import Control.Subcategories.ObjectOf (class ObjectOf)
+import Control.Subcategory.ObjectOf (class ObjectOf)
 import Control.Semigroupoid (compose) as Super
 import Record.Builder (Builder)
 
