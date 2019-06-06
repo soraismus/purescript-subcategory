@@ -63,10 +63,8 @@ mapFlipped fa f = f <$> fa
 infixl 1 mapFlipped as <#>
 
 flap
-  :: forall c f p v0 v1
-   . HasDimap c p
-  => Eval c
-  => HasIdentity p
+  :: forall c f v0 v1
+   . Eval c
   => HasMap c f
   => ObjectOf c v0
   => ObjectOf c v1
@@ -86,10 +84,17 @@ infixl 4 flap as <@>
 type Ba0 = Builder {} { a0 :: Int }
 insert_a0_0 :: Ba0
 insert_a0_0 = Builder.insert (SProxy :: SProxy "a0") 0
-
 type E_Ba0 = Either {} Ba0
--- x :: E_Ba0
--- x = flap (Left {} :: E_Ba0)
+-- x0 :: E_Ba0
+-- x0 = flap (Left {} :: E_Ba0) {}
+e0 :: E_Ba0
+e0 = Left {}
+-- x1 :: Either {} { a0 :: Int }
+-- x1 = e0 <@> {}
+e1 :: E_Ba0
+e1 = Right insert_a0_0
+x2 :: Either {} { a0 :: Int }
+x2 = e1 <@> {}
 
 instance hasMapUnrestricted
   :: Unrestricted.Functor f
