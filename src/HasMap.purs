@@ -10,9 +10,10 @@ import Data.Unit (unit) as Unit
 import Control.Restricted.Eval (class Eval, eval)
 import Control.Restricted.HasConst (class HasConst, const)
 import Control.Restricted.HasDimap (class HasDimap)
-import Control.Restricted.HasIdentity (class HasIdentity, identity)
--- import Control.Restricted.HasUnit (class HasUnit, unit)
+-- import Control.Restricted.HasIdentity (class HasIdentity, identity)
+import Control.Restricted.HasIdentity (class HasIdentity)
 import Control.Restricted.HasUnit (class HasUnit, unit)
+import Control.Restricted.HasUnit (class HasUnit)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Control.Restricted.Restrict (class Restrict, restrict)
 import Data.Functor (class Functor, map) as Unrestricted
@@ -54,18 +55,6 @@ mapFlipped fa f = f <$> fa
 
 infixl 1 mapFlipped as <#>
 
-type DictHasMap1 c f u =
-  { map
-      :: forall v
-       . HasMap c f
-      => HasUnit c u
-      => ObjectOf c v
-      => ObjectOf c u
-      => c v u
-      -> f v
-      -> f u
-  }
-
 -- #1 compiles but #0 does not.
 -- 0. -- type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => u }
 -- 1. -- type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => Unit -> u }
@@ -83,14 +72,13 @@ void
   -> f u
 -- 0. -- void dictHasUnit = dictHasMap.map (const dictHasUnit.unit)
 -- 1. -- void dictHasUnit = dictHasMap.map (const (dictHasUnit.unit Unit.unit))
-void dictHasUnit = dictHasMap.map (const unit')
+void dictHasUnit = dictHasMap.map (const (dictHasUnit.unit Unit.unit))
   where
-  dictHasMap :: DictHasMap1 c f u
+  dictHasMap :: DictHasMap c f
   dictHasMap = { map: map }
-  unit' :: u
-  unit' = dictHasUnit.unit Unit.unit
-  evalToUnit :: forall v. ObjectOf c v => c v u
-  evalToUnit = const unit'
+  dictHasUnit' :: DictHasUnit c u
+  dictHasUnit' = { unit: \_ -> unit }
+    -- No instance found for `HasUnit t1 u0`. Therefore, the category is unknown.
 
 -- voidLeft
 --   :: forall c f v0 v1
