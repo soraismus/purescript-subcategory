@@ -83,6 +83,10 @@ e1 :: E_Ba0
 e1 = Right insert_a0_0
 x2 :: Either {} { a0 :: Int }
 x2 = e1 <@> {}
+x3 :: Tuple { b5 :: Int } Ba0
+x3 = Tuple { b5: 5 } insert_a0_0
+x4 :: Tuple { b5 :: Int } { a0 :: Int }
+x4 = x3 <@> {}
 
 instance hasMapUnrestricted
   :: Unrestricted.Functor f
@@ -97,8 +101,3 @@ instance hasMapBuilder
   => HasMap Builder f
   where
   map builder = Unrestricted.map (eval builder)
-
--- instance hasMapBuilderEither :: HasMap Builder (Either a) where
---   map builder = Unrestricted.map (eval builder)
--- instance hasMapBuilderTuple :: HasMap Builder (Tuple a) where
---   map builder = Unrestricted.map (eval builder)

@@ -3,7 +3,6 @@ module Control.Restricted.HasUnit
   , unit
   ) where
 
-import Control.Restricted.Category (class Category)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Data.Unit (Unit)
 import Data.Unit (unit) as Unit

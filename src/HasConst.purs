@@ -3,7 +3,6 @@ module Control.Restricted.HasConst
   , const
   ) where
 
-import Control.Restricted.Category (class Category)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Data.Function ((<<<))
 import Data.Function (const) as Function
