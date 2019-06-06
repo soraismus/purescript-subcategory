@@ -1,6 +1,11 @@
 module Control.Subcategories.Profunctor
   ( class Profunctor
+  , arr
   , dimap
+  , lcmap
+  , rmap
+  , unwrapIso
+  , wrapIso
   ) where
 
 import Control.Subcategories.Category (class Category)
