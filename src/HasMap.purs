@@ -54,6 +54,18 @@ mapFlipped fa f = f <$> fa
 
 infixl 1 mapFlipped as <#>
 
+type DictHasMap1 c f u =
+  { map
+      :: forall v
+       . HasMap c f
+      => HasUnit c u
+      => ObjectOf c v
+      => ObjectOf c u
+      => c v u
+      -> f v
+      -> f u
+  }
+
 -- #1 compiles but #0 does not.
 -- 0. -- type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => u }
 -- 1. -- type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => Unit -> u }
@@ -64,16 +76,21 @@ void
    . HasConst c
   => HasMap c f
   => HasUnit c u
+  => ObjectOf c u
   => ObjectOf c v
   => DictHasUnit c u
   -> f v
   -> f u
 -- 0. -- void dictHasUnit = dictHasMap.map (const dictHasUnit.unit)
 -- 1. -- void dictHasUnit = dictHasMap.map (const (dictHasUnit.unit Unit.unit))
-void dictHasUnit = dictHasMap.map (const (dictHasUnit.unit Unit.unit))
+void dictHasUnit = dictHasMap.map (const unit')
   where
-  dictHasMap :: DictHasMap c f
+  dictHasMap :: DictHasMap1 c f u
   dictHasMap = { map: map }
+  unit' :: u
+  unit' = dictHasUnit.unit Unit.unit
+  evalToUnit :: forall v. ObjectOf c v => c v u
+  evalToUnit = const unit'
 
 -- voidLeft
 --   :: forall c f v0 v1
