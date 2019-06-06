@@ -1,4 +1,4 @@
-module Control.ObjectOf
+module Control.Subcategories.ObjectOf
   ( class ObjectOf
   ) where
 

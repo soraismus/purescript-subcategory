@@ -1,17 +1,17 @@
-module Control.Identity_
-  ( class Identity_
-  , identity_
+module Control.Subcategories.Identity
+  ( class Identity
+  , identity
   ) where
 
-import Control.Category (identity)
-import Control.ObjectOf (class ObjectOf)
+import Control.Category (identity) as Super
+import Control.Subcategories.ObjectOf (class ObjectOf)
 import Record.Builder (Builder)
 
-class Identity_ (p :: Type -> Type -> Type) where
-  identity_ :: forall a. ObjectOf p a => p a a
+class Identity (p :: Type -> Type -> Type) where
+  identity :: forall a. ObjectOf p a => p a a
 
-instance identity_Fn :: Identity_ Function where
-  identity_ = identity
+instance identityFn :: Identity Function where
+  identity = Super.identity
 
-instance identity_Builder :: Identity_ Builder where
-  identity_ = identity
+instance identityBuilder :: Identity Builder where
+  identity = Super.identity
