@@ -1,8 +1,8 @@
-module Control.Subcategory.Const
+module Control.Restricted.Const
   where
 
-import Control.Subcategory.Category (class Category)
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Restricted.Category (class Category)
+import Control.Restricted.ObjectOf (class ObjectOf)
 import Data.Function (compose, const) as Function
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)

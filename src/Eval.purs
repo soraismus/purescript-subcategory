@@ -1,6 +1,5 @@
-module Control.Subcategory.Eval
-  (
-    class Closed
+module Control.Restricted.Eval
+  ( class Closed
   , class Eval
   , assertClosed
   , eval
@@ -8,8 +7,8 @@ module Control.Subcategory.Eval
 
 import Prelude (Unit, unit)
 
-import Control.Subcategory.ObjectOf (class ObjectOf)
-import Control.Subcategory.Category (class Category)
+import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Restricted.Category (class Category)
 import Data.Function (apply) as Function
 import Record.Builder (Builder)
 import Record.Builder (build) as Builder

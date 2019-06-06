@@ -1,24 +1,13 @@
-module Control.Subcategory.Category
+module Control.Restricted.Category
   ( class Category
-  , assertIdentity
-  , assertSemigroupoid
-  )
-  where
+  ) where
 
-import Prelude (Unit, unit)
-
-import Control.Subcategory.Identity (class Identity)
-import Control.Subcategory.Semigroupoid (class Semigroupoid)
+import Control.Restricted.Identity (class HasIdentity)
+import Control.Restricted.Semigroupoid (class Semigroupoid)
 import Record.Builder (Builder)
 
-class Category (p :: Type -> Type -> Type) where
-  assertIdentity :: Identity p => Unit
-  assertSemigroupoid :: Semigroupoid p => Unit
+class (HasIdentity c, Semigroupoid c) <= Category (c :: Type -> Type -> Type)
 
-instance categoryFn :: Category Function where
-  assertIdentity = unit
-  assertSemigroupoid = unit
+instance categoryFn :: Category Function
 
-instance categoryBuilder :: Category Builder where
-  assertIdentity = unit
-  assertSemigroupoid = unit
+instance categoryBuilder :: Category Builder

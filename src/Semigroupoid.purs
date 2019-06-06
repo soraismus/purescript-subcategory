@@ -1,15 +1,14 @@
-module Control.Subcategory.Semigroupoid
+module Control.Restricted.Semigroupoid
   ( class Semigroupoid
   , compose        , (<<<)
   , composeFlipped , (>>>)
   )
   where
 
-import Control.Subcategory.ObjectOf (class ObjectOf)
-import Control.Semigroupoid (compose) as Super
+import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Semigroupoid (compose) as Unrestricted
 import Record.Builder (Builder)
 
--- | `s` is a sub-semigroupoid of PureScript's canonical semigroupoid `Function`.
 class Semigroupoid s where
   compose
     :: forall v0 v1 v2
@@ -22,7 +21,6 @@ class Semigroupoid s where
 
 infixr 9 compose as <<<
 
--- | Forwards composition, or `compose` with its arguments reversed.
 composeFlipped
   :: forall s v0 v1 v2
    . ObjectOf s v0
@@ -37,7 +35,7 @@ composeFlipped f g = compose g f
 infixr 9 composeFlipped as >>>
 
 instance semigroupoidFn :: Semigroupoid Function where
-  compose = Super.compose
+  compose = Unrestricted.compose
 
 instance semigroupoidBuilder :: Semigroupoid Builder where
-  compose = Super.compose
+  compose = Unrestricted.compose

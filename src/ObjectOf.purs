@@ -1,4 +1,4 @@
-module Control.Subcategory.ObjectOf
+module Control.Restricted.ObjectOf
   ( class ObjectOf
   ) where
 
@@ -28,8 +28,3 @@ instance objectOfBuilderEither
      , ObjectOf Builder b
      )
   => ObjectOf Builder (Either a b)
-
--- type LeibnizObject = ...
--- instance objectOfLeibniz
---   :: TypeEquals a LeibnizObject
---   => ObjectOf Leibniz LeibnizObject

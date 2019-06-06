@@ -1,4 +1,4 @@
-module Control.Subcategory.Profunctor
+module Control.Restricted.Profunctor
   ( class Profunctor
   , arr
   , dimap
@@ -8,12 +8,12 @@ module Control.Subcategory.Profunctor
   , wrapIso
   ) where
 
-import Control.Subcategory.Category (class Category)
-import Control.Subcategory.Identity (class Identity, identity)
-import Control.Subcategory.ObjectOf (class ObjectOf)
-import Control.Subcategory.Semigroupoid ((>>>))
+import Control.Restricted.Category (class Category)
+import Control.Restricted.Identity (class HasIdentity, identity)
+import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Restricted.Semigroupoid ((>>>))
 import Data.Newtype (class Newtype, wrap, unwrap)
-import Record.Builder (Builder)
+import Data.Profunctor (class Profunctor, dimap) as Unrestricted
 
 class Category c <= Profunctor
   (c :: Type -> Type -> Type)
@@ -32,11 +32,9 @@ class Category c <= Profunctor
 
 arr
   :: forall c p v0 v1
-   . Identity c
-  => Identity p
+   . HasIdentity p
   => ObjectOf c v0
   => ObjectOf c v1
-  => ObjectOf p v0
   => Profunctor c p
   => c v0 v1
   -> p v0 v1
@@ -44,8 +42,7 @@ arr f = rmap f identity
 
 lcmap
   :: forall c p v0 v1 v2
-   . Identity c
-  => ObjectOf c v0
+   . ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c v2
   => Profunctor c p
@@ -56,8 +53,7 @@ lcmap f = dimap f identity
 
 rmap
   :: forall c p v0 v1 v2
-   . Identity c
-  => ObjectOf c v0
+   . ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c v2
   => Profunctor c p
@@ -65,21 +61,6 @@ rmap
   -> p v0 v1
   -> p v0 v2
 rmap f = dimap identity f
-
-instance profunctorFn :: Profunctor Function Function where
-  dimap = dimap
-
-instance profunctorBuilder :: Profunctor Builder Builder where
-  dimap a2b c2d b2c = a2b >>> b2c >>> c2d
---   dimap a2b c2d b2c = mkBuilder a2b >>> b2c >>> mkBuilder c2d
---     where
---     mkBuilder
---       :: forall a b
---        . ObjectOf Builder a
---       => ObjectOf Builder b
---       => (a -> b)
---       -> Builder a b
---     mkBuilder = unsafeCoerce
 
 unwrapIso
   :: forall p v0 v1
@@ -101,3 +82,8 @@ wrapIso
   -> p v0 v0
   -> p v1 v1
 wrapIso _ = dimap wrap unwrap
+
+instance profunctorUnrestricted :: Unrestricted.Profunctor p => Profunctor Function p where
+  dimap = Unrestricted.dimap
+else instance profunctorCategory :: Category c => Profunctor c c where
+  dimap a2b c2d b2c = a2b >>> b2c >>> c2d
