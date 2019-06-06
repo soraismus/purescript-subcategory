@@ -14,6 +14,8 @@ import Control.Restricted.Restrict (class Restrict, restrict)
 import Data.Either (Either(Left, Right))
 import Data.Functor (class Functor, map) as Unrestricted
 import Data.Tuple (Tuple(Tuple))
+import Data.Unit (Unit)
+import Data.Unit (unit) as Unit
 
 class HasMap
   (c :: Type -> Type -> Type)
@@ -84,15 +86,43 @@ e1 = Right insert_a0_0
 x2 :: Either {} { a0 :: Int }
 x2 = e1 <@> {}
 
-instance hasMapUnrestricted
-  :: Unrestricted.Functor f
-  => HasMap Function f
+-- instance hasMapUnrestricted
+--   :: Unrestricted.Functor f
+--   => HasMap Function f
+--   where
+--   map = Unrestricted.map
+
+class Closed (c :: Type -> Type -> Type) where
+  assertClosed :: forall v0 v1. ObjectOf c (c v0 v1) => Unit
+
+instance closedFn :: Closed Function where
+  assertClosed = Unit.unit
+
+instance closedBuilder :: Closed Builder where
+  assertClosed = Unit.unit
+
+-- instance hasMapBuilder
+--   :: ( Unrestricted.Functor f
+--      , Eval c
+--      , Closed c
+--      )
+--   => HasMap c f
+--   where
+--   map f = Unrestricted.map (eval f)
+--     where
+--     proof :: Closed c => Unit
+--     proof = assertClosed
+
+instance hasMapBuilder
+  :: ( Unrestricted.Functor f
+     , Eval c
+     )
+  => HasMap c f
   where
-  map = Unrestricted.map
+  map f = Unrestricted.map (eval f)
 
-instance hasMapBuilderEither :: HasMap Builder (Either a) where
-  map builder (Left r) = Left r
-  map builder (Right r) = Right (eval builder r)
-
-instance hasMapBuilderTuple :: HasMap Builder (Tuple a) where
-  map builder (Tuple x y) = Tuple x (eval builder y)
+-- instance hasMapBuilderEither :: HasMap Builder (Either a) where
+--   map builder = Unrestricted.map (eval builder)
+--
+-- instance hasMapBuilderTuple :: HasMap Builder (Tuple a) where
+--   map builder = Unrestricted.map (eval builder)
