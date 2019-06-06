@@ -1,51 +1,38 @@
 module Control.Restricted.Eval
-  ( class Closed
-  , class Eval
-  , assertClosed
+  ( class Eval
   , eval
   ) where
 
-import Prelude (Unit, unit)
-
 import Control.Restricted.ObjectOf (class ObjectOf)
-import Control.Restricted.Category (class Category)
 import Data.Function (apply) as Function
 import Record.Builder (Builder)
 import Record.Builder (build) as Builder
 import Unsafe.Coerce (unsafeCoerce)
 
-class Closed (c :: Type -> Type -> Type) where
-  assertClosed :: forall a b. ObjectOf c (c a b) => Unit
+-- class Closed (c :: Type -> Type -> Type) where
+--   assertClosed :: forall a b. ObjectOf c (c a b) => Unit
+-- instance closedFn :: Closed Function where
+--   assertClosed = unit
+-- instance closedBuilder :: Closed Builder where
+--   assertClosed = unit
 
-instance closedFn :: Closed Function where
-  assertClosed = unit
+-- class TensorOf
+--   (c :: Type -> Type -> Type)
+--   (t :: Type -> Type -> Type)
+--   where
+--   assertTensor :: forall a b. ObjectOf c (t a b) => Unit
 
-instance closedBuilder :: Closed Builder where
-  assertClosed = unit
-
-class TensorOf
+class Eval
   (c :: Type -> Type -> Type)
-  (t :: Type -> Type -> Type)
   where
-  assertTensor :: forall a b. ObjectOf c (t a b) => Unit
-
-class UnitOf
-  (c :: Type -> Type -> Type)
-  (u :: Type)
-
-class
-  Category c
-    <= Eval
-        (c :: Type -> Type -> Type)
-        where
-        eval
-          :: forall v0 v1
-          . ObjectOf c v0
-          => ObjectOf c v1
-          => ObjectOf c (c v0 v1)
-          => (c v0 v1)
-          -> v0
-          -> v1
+  eval
+    :: forall v0 v1
+     . ObjectOf c v0
+    => ObjectOf c v1
+    => ObjectOf c (c v0 v1)
+    => (c v0 v1)
+    -> v0
+    -> v1
 
 -- class (Category_ p, Profunctor_ p) <= Eval p where
 --   eval :: forall a b. ObjectOf p a => ObjectOf p b => p a b -> a -> b

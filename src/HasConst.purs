@@ -10,7 +10,7 @@ import Data.Function (const) as Function
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)
 
-class Category c <= HasConst (c :: Type -> Type -> Type) where
+class HasConst (c :: Type -> Type -> Type) where
   const :: forall v0 v1. ObjectOf c v0 => ObjectOf c v1 => v0 -> c v1 v0
 
 instance constFn :: HasConst Function where
