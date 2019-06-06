@@ -1,0 +1,2 @@
+module Control.TensorStrength
+  where
