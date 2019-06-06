@@ -1,7 +1,12 @@
 module Control.Subcategories.Eval
-  ( class Eval
+  (
+    class Closed
+  , class Eval
+  , assertClosed
   , eval
   ) where
+
+import Prelude (Unit, unit)
 
 import Control.Subcategories.ObjectOf (class ObjectOf)
 import Control.Subcategories.Category (class Category)
@@ -10,14 +15,36 @@ import Record.Builder (Builder)
 import Record.Builder (build) as Builder
 import Unsafe.Coerce (unsafeCoerce)
 
-class Category c <= Eval
+class Closed (c :: Type -> Type -> Type) where
+  assertClosed :: forall a b. ObjectOf c (c a b) => Unit
+
+instance closedFn :: Closed Function where
+  assertClosed = unit
+
+instance closedBuilder :: Closed Builder where
+  assertClosed = unit
+
+class TensorOf
   (c :: Type -> Type -> Type)
---   (t :: Type -> Type -> Type)
---   (u :: Type)
+  (t :: Type -> Type -> Type)
   where
---   assertClosed :: forall a b. ObjectOf c (c a b) => Unit
---   assertTensor :: forall a b. ObjectOf c (t a b) => Unit
---   assertUnit :: ObjectOf c u => Unit
+  assertTensor :: forall a b. ObjectOf c (t a b) => Unit
+
+class UnitOf
+  (c :: Type -> Type -> Type)
+  (u :: Type)
+
+class
+  ( Category c
+  , Closed c
+--   , TensorOf c t
+--   , UnitOf c u
+  )
+  <= Eval
+      (c :: Type -> Type -> Type)
+--       (t :: Type -> Type -> Type)
+--       (u :: Type)
+  where
 --   curry
 --     :: forall v0 v1 v2
 --      . ObjectOf c v0
