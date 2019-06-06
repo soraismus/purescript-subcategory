@@ -5,8 +5,10 @@ module Control.Restricted.HasMap
   ) where
 
 import Control.Restricted.Eval (class Eval, eval)
+import Control.Restricted.HasConst (class HasConst, const)
 import Control.Restricted.HasDimap (class HasDimap, arr)
 import Control.Restricted.HasIdentity (class HasIdentity, identity)
+import Control.Restricted.HasUnit (class HasUnit, unit)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Control.Restricted.Restrict (class Restrict, restrict)
 import Data.Functor (class Functor, map) as Unrestricted
@@ -25,6 +27,17 @@ class HasMap
 
 infixl 4 map as <$>
 
+type DictHasMap c f =
+  { map
+      :: forall v0 v1
+       . HasMap c f
+      => ObjectOf c v0
+      => ObjectOf c v1
+      => c v0 v1
+      -> f v0
+      -> f v1
+  }
+
 mapFlipped
   :: forall c f v0 v1
    . HasMap c f
@@ -37,15 +50,22 @@ mapFlipped fa f = f <$> fa
 
 infixl 1 mapFlipped as <#>
 
--- void
---   :: forall c f u v
---    . HasMap c f
---   => HasConst c
---   => HasUnit c u
---   => ObjectOf c v
---   => f v
---   -> f u
--- void = map (const unit)
+type DictHasUnit c u = { unit :: HasUnit c u => ObjectOf c u => u }
+
+void
+  :: forall c f u v
+   . HasConst c
+  => HasMap c f
+  => HasUnit c u
+  => ObjectOf c v
+  => f v
+  -> f u
+void = dictHasMap.map (const dictHasUnit.unit)
+  where
+  dictHasMap :: DictHasMap c f
+  dictHasMap = { map: map }
+  dictHasUnit :: DictHasUnit c u
+  dictHasUnit = { unit: unit }
 
 -- voidLeft
 --   :: forall c f v0 v1
@@ -71,56 +91,6 @@ infixl 1 mapFlipped as <#>
 -- voidRight x = map (const x)
 -- infixl 4 voidRight as <$
 
--- -- | Apply a value in a computational context to a value in no context.
--- -- |
--- -- | Generalizes `flip`.
--- -- |
--- -- | ```purescript
--- -- | longEnough :: String -> Bool
--- -- | hasSymbol :: String -> Bool
--- -- | hasDigit :: String -> Bool
--- -- | password :: String
--- -- |
--- -- | validate :: String -> Array Bool
--- -- | validate = flap [longEnough, hasSymbol, hasDigit]
--- -- | ```
--- -- |
--- -- | ```purescript
--- -- | flap (-) 3 4 == 1
--- -- | threeve <$> Just 1 <@> 'a' <*> Just true == Just (threeve 1 'a' true)
--- -- | ```
--- flap :: forall f a b. Functor f => f (a -> b) -> a -> f b
--- flap ff x = map (\f -> f x) ff
---
--- infixl 4 flap as <@>
-
-type HasMap_ c f =
-  { map
-      :: forall v0 v1
-       . HasMap c f
-      => ObjectOf c v0
-      => ObjectOf c v1
-      => c v0 v1
-      -> f v0
-      -> f v1
-  }
-
--- flap
---   :: forall c f p v0 v1
---    . HasDimap c p
---   => Eval c
---   => HasIdentity p
---   => HasMap c f
---   => ObjectOf c v0
---   => ObjectOf c v1
---   => ObjectOf c (c v0 v1)
---   => Restrict Function c
---   => f (c v0 v1)
---   -> v0
---   -> f v1
--- flap ff x =
---   map (restrict (\f -> eval f x)) ff
-
 flap
   :: forall c f p v0 v1
    . HasDimap c p
@@ -135,11 +105,12 @@ flap
   -> v0
   -> f v1
 flap ff x =
-  map' (restrict (\f -> eval f x)) ff
+  dictHasMap.map (restrict (\f -> eval f x)) ff
   where
-  dictionary :: HasMap_ c f
-  dictionary = { map: map }
-  map' = dictionary.map
+  dictHasMap :: DictHasMap c f
+  dictHasMap = { map: map }
+
+infixl 4 flap as <@>
 
 instance functorUnrestricted
   :: Unrestricted.Functor f

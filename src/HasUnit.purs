@@ -9,7 +9,7 @@ import Data.Unit (Unit)
 import Data.Unit (unit) as Unit
 import Record.Builder (Builder)
 
-class HasUnit
+class ObjectOf c u <= HasUnit
   (c :: Type -> Type -> Type)
   (u :: Type)
   | c -> u
