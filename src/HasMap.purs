@@ -72,10 +72,10 @@ instance hasMapUnrestricted
   where
   map = Unrestricted.map
 
--- instance hasMapBuilder
---   :: ( Unrestricted.Functor f
---      , OperatorOf Builder f
---      )
---   => HasMap Builder f
---   where
---   map builder = Unrestricted.map (eval builder)
+instance hasMapBuilder
+  :: ( Unrestricted.Functor f
+     , OperatorOf Builder f
+     )
+  => HasMap Builder f
+  where
+  map builder = Unrestricted.map (eval builder)

@@ -6,6 +6,8 @@ module Control.Restricted.HasPure
   , when
   ) where
 
+import Prelude ((+))
+
 import Control.Applicative (class Applicative, pure) as Unrestricted
 import Control.Restricted.HasApply (class HasApply, (<*>))
 import Control.Restricted.HasUnit (class HasUnit)
@@ -35,6 +37,9 @@ liftA1
   -> f v1
 liftA1 { pure } f x = pure f <*> x
 
+-- g :: Array Int -> Array Int
+-- g = liftA1 { pure } (\i -> i + 1)
+
 unless
   :: forall c m u
    . HasPure c m
@@ -61,7 +66,9 @@ when
 when _        _        true  m = m
 when { pure } { unit } false _ = pure (unit Unit.unit)
 
-instance hasPureUnrestricted
+instance hasPureFunctionArray :: HasPure Function Array where
+  pure = Unrestricted.pure
+else instance hasPureUnrestricted
   :: Unrestricted.Applicative f
   => HasPure Function f
   where

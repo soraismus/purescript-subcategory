@@ -10,7 +10,7 @@ import Record.Builder (Builder)
 import Record.Builder (build) as Builder
 import Unsafe.Coerce (unsafeCoerce)
 
-class Closed c <= HasEval (c :: Type -> Type -> Type) where
+class HasEval (c :: Type -> Type -> Type) where
   eval
     :: forall v0 v1
      . ObjectOf c v0
