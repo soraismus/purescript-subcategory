@@ -6,19 +6,21 @@ module Control.Restricted.Monad
 --   , unlessM
   ) where
 
-import Prelude (($))
+-- import Prelude (($))
 
 import Control.Monad (class Monad) as Unrestricted
 import Control.Restricted.Applicative (class Applicative)
-import Control.Restricted.Apply (class Apply)
+-- import Control.Restricted.Apply (class Apply)
 import Control.Restricted.Bind (class Bind)
-import Control.Restricted.HasApply (class HasApply, apply)
-import Control.Restricted.HasBind (class HasBind, bind, (>>=))
-import Control.Restricted.HasEval (class HasEval, eval)
-import Control.Restricted.HasPure (class HasPure, pure, unless, when)
+-- import Control.Restricted.HasApply (class HasApply, apply)
+-- import Control.Restricted.HasBind (class HasBind, bind, (>>=))
+import Control.Restricted.HasBind (class HasBind)
+-- import Control.Restricted.HasEval (class HasEval, eval)
+-- import Control.Restricted.HasPure (class HasPure, pure, unless, when)
+import Control.Restricted.HasPure (class HasPure)
 import Control.Restricted.ObjectOf (class ObjectOf)
-import Control.Restricted.Restrict (class Restrict, restrict)
-import Data.Unit (Unit)
+-- import Control.Restricted.Restrict (class Restrict, restrict)
+-- import Data.Unit (Unit)
 
 class (Applicative c m, Bind c m) <= Monad c m
 
