@@ -5,12 +5,8 @@ module Control.Restricted.HasPure ( class HasPure
   ) where
 
 import Control.Applicative (class Applicative, pure) as Unrestricted
-import Control.Restricted.HasApply (class HasApply, apply, (<*>))
-import Control.Restricted.HasConst (class HasConst, const)
-import Control.Restricted.HasEval (class HasEval, eval)
-import Control.Restricted.HasIdentity (class HasIdentity, identity)
-import Control.Restricted.HasMap (class HasMap, map, (<$>))
-import Control.Restricted.HasUnit (class HasUnit, unit)
+import Control.Restricted.HasApply (class HasApply, (<*>))
+import Control.Restricted.HasUnit (class HasUnit)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Data.Unit (Unit)
 import Data.Unit (unit) as Unit
@@ -43,14 +39,12 @@ when
   => HasUnit c u
   => ObjectOf c u
   => DictHasPure c m
+  -> DictHasUnit c u
   -> Boolean
   -> m u
   -> m u
-when _ true m = m
-when { pure } false _ = pure (dictHasUnit.unit Unit.unit)
-  where
-  dictHasUnit :: DictHasUnit c u
-  dictHasUnit = { unit: \_ -> unit }
+when _        _        true  m = m
+when { pure } { unit } false _ = pure (unit Unit.unit)
 
 -- -- | Perform an applicative action unless a condition is true.
 -- unless :: forall m. Applicative m => Boolean -> m Unit -> m Unit
