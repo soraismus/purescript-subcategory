@@ -15,8 +15,8 @@ import Control.Restricted.HasEval (class HasEval, eval)
 import Control.Restricted.HasIdentity (class HasIdentity, identity)
 import Control.Restricted.HasMap (class HasMap, map, (<$>))
 import Control.Restricted.ObjectOf (class ObjectOf)
---import Data.Functor (class Functor, map) as Unrestricted
---import Record.Builder (Builder)
+import Record.Builder (Builder)
+import Unsafe.Coerce (unsafeCoerce)
 
 -- class Strength f t where
 --   strengthen :: forall v0 v1. t v0 (f v1) -> f (t v0 v1)
@@ -28,11 +28,6 @@ import Control.Restricted.ObjectOf (class ObjectOf)
 -- Functor f, HasApply <= ... Apply
 
 -- | Formally, `Apply` represents a strong lax semi-monoidal endofunctor.
--- Tuple
---   (f (c v0 v1))
---   (f v0)
--- --> f (Tuple (c v0 v1) v0)
--- --> f v1
 class HasApply c f where
   apply
     :: forall v0 v1
@@ -57,14 +52,33 @@ type DictHasApply c f =
       -> f v1
   }
 
+type DictHasMap c f =
+  { map
+      :: forall v0 v1
+       . HasMap c f
+      => ObjectOf c v0
+      => ObjectOf c v1
+      => c v0 v1
+      -> f v0
+      -> f v1
+  }
+
 instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
   apply = Unrestricted.apply
 
--- instance applyBuilder
---   :: ObjectOf Builder r
---   => HasApply Builder (Builder r)
---   where
---   apply ff fx r = eval (eval ff r) (eval fx r)
+instance applyBuilder
+  :: ObjectOf Builder r
+  => HasApply Builder (Builder r)
+  where
+  apply ff fx = mkBuilder \r -> eval (eval ff r) (eval fx r)
+    where
+    mkBuilder
+      :: forall v0 v1
+       . ObjectOf Builder v0
+      => ObjectOf Builder v1
+      => (v0 -> v1)
+      -> (Builder v0 v1)
+    mkBuilder = unsafeCoerce
 
 applyFirst
   :: forall c f v0 v1
@@ -83,17 +97,6 @@ applyFirst x0 x1 = dictHasApply.apply (const <$> x0) x1
   dictHasApply = { apply: apply }
 
 infixl 4 applyFirst as <*
-
-type DictHasMap c f =
-  { map
-      :: forall v0 v1
-       . HasMap c f
-      => ObjectOf c v0
-      => ObjectOf c v1
-      => c v0 v1
-      -> f v0
-      -> f v1
-  }
 
 applySecond
   :: forall c f v0 v1
@@ -122,9 +125,6 @@ applySecond x0 x1 =
 
 infixl 4 applySecond as *>
 
--- map   :: c v0 v1 -> f v0 -> f v1
--- apply :: f (c v0 v1) -> f v0 -> f v1
--- eval  :: (c v0 v1) -> v0 -> v1
 lift2
   :: forall c f v0 v1 v2
    . HasApply c f
@@ -137,7 +137,7 @@ lift2
   -> f v0
   -> f v1
   -> f v2
-lift2 f x0 x1 = apply (map f x0) x1
+lift2 f x0 x1 = f <$> x0 <*> x1
 
 lift3
   :: forall c f v0 v1 v2 v3
