@@ -70,7 +70,7 @@ class HasCurriedEval
     => c (exp v0 v1) (exp v0 v1)
 
 class HasUncurriedEval
-  (c       :: Type -> Type -> Type)
+  (c      :: Type -> Type -> Type)
   (tensor :: Type -> Type -> Type)
   (exp    :: Type -> Type -> Type)
   where
