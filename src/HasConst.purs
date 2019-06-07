@@ -4,10 +4,10 @@ module Control.Restricted.HasConst
   ) where
 
 import Control.Restricted.ObjectOf (class ObjectOf)
-import Data.Function ((<<<))
+-- import Data.Function ((<<<))
 import Data.Function (const) as Function
-import Record.Builder (Builder)
-import Unsafe.Coerce (unsafeCoerce)
+-- import Record.Builder (Builder)
+-- import Unsafe.Coerce (unsafeCoerce)
 
 class HasConst (c :: Type -> Type -> Type) where
 --   const :: forall v0 v1. ObjectOf c v0 => ObjectOf c v1 => v0 -> c v1 v0
