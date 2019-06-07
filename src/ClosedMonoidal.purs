@@ -23,15 +23,14 @@ class Semimonoidal
   (c         :: Type -> Type -> Type)
   (bifunctor :: Type -> Type -> Type)
   (tensor    :: Type -> Type -> Type)
-  (f         :: Type -> Type)
   where
   join
     :: forall v0 v1
      . ObjectOf c v0
     => ObjectOf c v1
     => ObjectOf c (tensor v0 v1)
-    => bifunctor (f v0) (f v1)
-    -> f (tensor v0 v1)
+    => bifunctor v0 v1
+    -> tensor v0 v1
 
 class
   ( HasUnit c u1
@@ -39,17 +38,16 @@ class
   )
   <= HasExtrinsicUnit
       (c  :: Type -> Type -> Type)
-      (f  :: Type -> Type)
       (u0 :: Type)
       (u1 :: Type)
       where
-      extrinsicUnit :: ObjectOf c u1 => u0 -> f u1
+      extrinsicUnit :: ObjectOf c u1 => u0 -> u1
 
 class
-  ( Semimonoidal c bifunctor tensor f
-  , HasExtrinsicUnit c f u0 u1
+  ( Semimonoidal c bifunctor tensor
+  , HasExtrinsicUnit c u0 u1
   )
-  <= Monoidal c bifunctor tensor f u0 u1
+  <= Monoidal c bifunctor tensor u0 u1
 
 class HasCurry
   (c      :: Type -> Type -> Type)
