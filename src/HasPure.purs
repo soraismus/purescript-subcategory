@@ -46,10 +46,18 @@ when
 when _        _        true  m = m
 when { pure } { unit } false _ = pure (unit Unit.unit)
 
--- -- | Perform an applicative action unless a condition is true.
--- unless :: forall m. Applicative m => Boolean -> m Unit -> m Unit
--- unless false m = m
--- unless true _ = pure unit
+unless
+  :: forall c m u
+   . HasPure c m
+  => HasUnit c u
+  => ObjectOf c u
+  => DictHasPure c m
+  -> DictHasUnit c u
+  -> Boolean
+  -> m u
+  -> m u
+unless _        _        false m = m
+unless { pure } { unit } true  _ = pure (unit Unit.unit)
 
 instance hasPureUnrestricted
   :: Unrestricted.Applicative f
