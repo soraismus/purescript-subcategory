@@ -1,7 +1,9 @@
-module Control.Restricted.HasPure ( class HasPure
-  , pure
+module Control.Restricted.HasPure
+  ( class HasPure
   , liftA1
---   , unless, when
+  , pure
+  , unless
+  , when
   ) where
 
 import Control.Applicative (class Applicative, pure) as Unrestricted
