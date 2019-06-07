@@ -25,13 +25,14 @@ liftA1
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (c v0 v1)
-  => c v0 v1
+  => DictHasPure c f
+  -> c v0 v1
   -> f v0
   -> f v1
-liftA1 f x = dictHasPure.pure f <*> x
-  where
-  dictHasPure :: DictHasPure c f
-  dictHasPure = { pure }
+liftA1 dictHasPure f x = dictHasPure.pure f <*> x
+--   where
+--   dictHasPure :: DictHasPure c f
+--   dictHasPure = { pure }
 
 -- -- | Perform an applicative action when a condition is true.
 -- when :: forall m. Applicative m => Boolean -> m Unit -> m Unit
