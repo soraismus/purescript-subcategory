@@ -62,7 +62,7 @@ flap ff x =
   dictHasMap.map (restrict (\f -> eval f x)) ff
   where
   dictHasMap :: DictHasMap c f
-  dictHasMap = { map: map }
+  dictHasMap = { map }
 
 infixl 4 flap as <@>
 

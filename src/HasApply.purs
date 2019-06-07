@@ -94,7 +94,7 @@ applyFirst
 applyFirst x0 x1 = dictHasApply.apply (const <$> x0) x1
   where
   dictHasApply :: DictHasApply c f
-  dictHasApply = { apply: apply }
+  dictHasApply = { apply }
 
 infixl 4 applyFirst as <*
 
@@ -119,9 +119,9 @@ applySecond x0 x1 =
       x1
   where
   dictHasMap :: DictHasMap c f
-  dictHasMap = { map: map }
+  dictHasMap = { map }
   dictHasApply :: DictHasApply c f
-  dictHasApply = { apply: apply }
+  dictHasApply = { apply }
 
 infixl 4 applySecond as *>
 
