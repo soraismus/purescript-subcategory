@@ -15,8 +15,8 @@ import Control.Restricted.HasEval (class HasEval, eval)
 import Control.Restricted.HasIdentity (class HasIdentity, identity)
 import Control.Restricted.HasMap (class HasMap, map, (<$>))
 import Control.Restricted.ObjectOf (class ObjectOf)
-import Record.Builder (Builder)
-import Unsafe.Coerce (unsafeCoerce)
+-- import Record.Builder (Builder)
+-- import Unsafe.Coerce (unsafeCoerce)
 
 -- class Strength f t where
 --   strengthen :: forall v0 v1. t v0 (f v1) -> f (t v0 v1)
@@ -66,19 +66,19 @@ type DictHasMap c f =
 instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
   apply = Unrestricted.apply
 
-instance applyBuilder
-  :: ObjectOf Builder r
-  => HasApply Builder (Builder r)
-  where
-  apply ff fx = mkBuilder \r -> eval (eval ff r) (eval fx r)
-    where
-    mkBuilder
-      :: forall v0 v1
-       . ObjectOf Builder v0
-      => ObjectOf Builder v1
-      => (v0 -> v1)
-      -> (Builder v0 v1)
-    mkBuilder = unsafeCoerce
+-- instance applyBuilder
+--   :: ObjectOf Builder r
+--   => HasApply Builder (Builder r)
+--   where
+--   apply ff fx = mkBuilder \r -> eval (eval ff r) (eval fx r)
+--     where
+--     mkBuilder
+--       :: forall v0 v1
+--        . ObjectOf Builder v0
+--       => ObjectOf Builder v1
+--       => (v0 -> v1)
+--       -> (Builder v0 v1)
+--     mkBuilder = unsafeCoerce
 
 applyFirst
   :: forall c f v0 v1
