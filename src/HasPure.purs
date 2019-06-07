@@ -35,19 +35,6 @@ liftA1
   -> f v1
 liftA1 { pure } f x = pure f <*> x
 
-when
-  :: forall c m u
-   . HasPure c m
-  => HasUnit c u
-  => ObjectOf c u
-  => DictHasPure c m
-  -> DictHasUnit c u
-  -> Boolean
-  -> m u
-  -> m u
-when _        _        true  m = m
-when { pure } { unit } false _ = pure (unit Unit.unit)
-
 unless
   :: forall c m u
    . HasPure c m
@@ -60,6 +47,19 @@ unless
   -> m u
 unless _        _        false m = m
 unless { pure } { unit } true  _ = pure (unit Unit.unit)
+
+when
+  :: forall c m u
+   . HasPure c m
+  => HasUnit c u
+  => ObjectOf c u
+  => DictHasPure c m
+  -> DictHasUnit c u
+  -> Boolean
+  -> m u
+  -> m u
+when _        _        true  m = m
+when { pure } { unit } false _ = pure (unit Unit.unit)
 
 instance hasPureUnrestricted
   :: Unrestricted.Applicative f
