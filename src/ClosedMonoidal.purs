@@ -13,10 +13,43 @@ module Control.Restricted.ClosedMonoidal
 
 import Prelude ((<<<))
 
+import Control.Restricted.HasUnit (class HasUnit)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Data.Function (flip) as Function
 import Data.Tuple (Tuple)
 import Data.Tuple (curry, swap, uncurry) as Tuple
+
+class Semimonoidal
+  (c         :: Type -> Type -> Type)
+  (bifunctor :: Type -> Type -> Type)
+  (tensor    :: Type -> Type -> Type)
+  (f         :: Type -> Type)
+  where
+  join
+    :: forall v0 v1
+     . ObjectOf c v0
+    => ObjectOf c v1
+    => ObjectOf c (tensor v0 v1)
+    => bifunctor (f v0) (f v1)
+    -> f (tensor v0 v1)
+
+class
+  ( HasUnit c u1
+  , ObjectOf c u1
+  )
+  <= HasExtrinsicUnit
+      (c  :: Type -> Type -> Type)
+      (f  :: Type -> Type)
+      (u0 :: Type)
+      (u1 :: Type)
+      where
+      extrinsicUnit :: ObjectOf c u1 => u0 -> f u1
+
+class
+  ( Semimonoidal c bifunctor tensor f
+  , HasExtrinsicUnit c f u0 u1
+  )
+  <= Monoidal c bifunctor tensor f u0 u1
 
 class HasCurry
   (c      :: Type -> Type -> Type)
