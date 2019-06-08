@@ -19,10 +19,10 @@ class Slackable (c :: Type -> Type -> Type) where
     -> v0
     -> v1
 
-instance closedMonoidalFn :: Slackable Function where
+instance slackableFn :: Slackable Function where
   slacken = Function.apply
 
-instance closedMonoidalBuilder :: Slackable Builder where
+instance slackableBuilder :: Slackable Builder where
   slacken builder record = coerceBuild Builder.build builder record
     where
     coerceBuild
