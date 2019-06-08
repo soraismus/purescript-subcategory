@@ -1,43 +1,27 @@
 module Control.Restricted.Monad
   ( class Monad
---   , ap
---   , liftM1
---   , whenM
---   , unlessM
+  , ap
+  , liftM1
+  , unlessM
+  , unlessM'
+  , whenM
+  , whenM'
   ) where
 
 import Prelude (($))
 
 import Control.Monad (class Monad) as Unrestricted
 import Control.Restricted.Applicative (class Applicative)
-import Control.Restricted.Apply (class Apply)
 import Control.Restricted.Bind (class Bind)
-import Control.Restricted.HasApply (class HasApply, apply)
-import Control.Restricted.HasBind (class HasBind, bind, (>>=))
-import Control.Restricted.HasBind (class HasBind)
+import Control.Restricted.HasBind (class HasBind, bind)
 import Control.Restricted.HasEval (class HasEval, eval)
 import Control.Restricted.HasPure (class HasPure, pure, unless', when')
 import Control.Restricted.HasUnit (class HasUnit)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Control.Restricted.Restrict (class Restrict, restrict)
--- import Data.Unit (Unit)
 import Type.Proxy (Proxy3(Proxy3))
 
 class (Applicative c m, Bind c m) <= Monad c m
-
--- type DictHasBind c m =
---   { bind
---       :: forall v0 v1
---        . HasBind c m
---       => ObjectOf c v0
---       => ObjectOf c (m v1)
---       => m v0
---       -> c v0 (m v1)
---       -> m v1
---   }
-
--- type DictHasPure c f =
---   { pure :: forall v. HasPure c f => ObjectOf c v => v -> f v }
 
 instance monadUnrestricted
   :: Unrestricted.Monad m
