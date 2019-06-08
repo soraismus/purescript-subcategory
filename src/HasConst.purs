@@ -4,23 +4,22 @@ module Control.Subcategory.HasConst
   ) where
 
 import Control.Subcategory.Constituency (class ObjectOf)
-import Data.Function (const) as Function
-import Record.Builder (Builder)
-import Unsafe.Coerce (unsafeCoerce)
+import Control.Subcategory.HasPure (class HasPure, pure')
+import Control.Subcategory.Restrictable (class Restrictable, restrict)
+import Type.Proxy (Proxy3(Proxy3))
 
 class HasConst (c :: Type -> Type -> Type) where
-  const :: forall v0 v1. ObjectOf c v0 => ObjectOf c v1 => c v0 (c v1 v0)
+  const
+    :: forall v0 v1
+     . ObjectOf c v0
+    => ObjectOf c v1
+    => ObjectOf c (c v1 v0)
+    => c v0 (c v1 v0)
 
-instance constFn :: HasConst Function where
-  const = Function.const
-
-instance constBuilder :: HasConst Builder where
-  const = mkBuilder \v0 -> mkBuilder (const v0)
-    where
-    mkBuilder
-      :: forall v0 v1
-       . ObjectOf Builder v0
-      => ObjectOf Builder v1
-      => (v0 -> v1)
-      -> (Builder v0 v1)
-    mkBuilder = unsafeCoerce
+instance constRestrictableFixedSourceArrow
+  :: ( HasPure c (c v)
+     , Restrictable Function c
+     )
+  => HasConst c
+  where
+  const = restrict \v -> pure' (Proxy3 :: Proxy3 c) v
