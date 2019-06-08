@@ -1,5 +1,5 @@
-module Control.Subcategory.Restrict
-  ( class Restrict
+module Control.Subcategory.Restrictable
+  ( class Restrictable
   , restrict
   ) where
 
@@ -8,7 +8,7 @@ import Control.Subcategory.ObjectOf (class ObjectOf)
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)
 
-class Restrict
+class Restrictable
   (c0 :: Type -> Type -> Type)
   (c1 :: Type -> Type -> Type)
   where
@@ -19,7 +19,7 @@ class Restrict
     => c0 v0 v1
     -> c1 v0 v1
 
-instance restrictFnBuilder :: Restrict Function Builder where
+instance restrictableFnBuilder :: Restrictable Function Builder where
   restrict
     :: forall v0 v1
      . ObjectOf Builder v0
@@ -28,5 +28,5 @@ instance restrictFnBuilder :: Restrict Function Builder where
     -> Builder v0 v1
   restrict = unsafeCoerce
 
-instance restrictFnFn :: Restrict Function Function where
+instance restrictableFnFn :: Restrictable Function Function where
   restrict = Unrestricted.identity

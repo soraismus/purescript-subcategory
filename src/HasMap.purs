@@ -6,7 +6,7 @@ module Control.Subcategory.HasMap
 
 import Control.Subcategory.HasEval (class HasEval, eval)
 import Control.Subcategory.ObjectOf (class ObjectOf, class OperatorOf)
-import Control.Subcategory.Restrict (class Restrict, restrict)
+import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Data.Functor (class Functor, map) as Unrestricted
 import Record.Builder (Builder)
 
@@ -43,7 +43,7 @@ flap
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (c v0 v1)
-  => Restrict Function c
+  => Restrictable Function c
   => f (c v0 v1)
   -> v0
   -> f v1

@@ -14,7 +14,7 @@ import Control.Applicative (class Applicative, pure) as Unrestricted
 import Control.Subcategory.HasApply (class HasApply, (<*>))
 import Control.Subcategory.HasUnit (class HasUnit, unit)
 import Control.Subcategory.ObjectOf (class ObjectOf)
-import Control.Subcategory.Restrict (class Restrict, restrict)
+import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Type.Proxy (Proxy3(Proxy3))
 
 class HasPure c f where
@@ -89,7 +89,7 @@ instance hasPureUnrestricted
 
 else instance hasPure
   :: ( ObjectOf c v
-     , Restrict Function c
+     , Restrictable Function c
      )
   => HasPure c (c v)
   where

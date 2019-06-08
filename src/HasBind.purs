@@ -19,7 +19,7 @@ import Control.Subcategory.HasEval (class HasEval, eval)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.HasUnit (class HasUnit)
 import Control.Subcategory.ObjectOf (class ObjectOf)
-import Control.Subcategory.Restrict (class Restrict, restrict)
+import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Data.Function (flip)
 
 class HasBind c m where
@@ -134,7 +134,7 @@ ifM
    . HasBind c m
   => ObjectOf c Boolean
   => ObjectOf c (m v)
-  => Restrict Function c
+  => Restrictable Function c
   => m Boolean
   -> m v
   -> m v

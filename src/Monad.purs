@@ -18,7 +18,7 @@ import Control.Subcategory.HasEval (class HasEval, eval)
 import Control.Subcategory.HasPure (class HasPure, pure, unless', when')
 import Control.Subcategory.HasUnit (class HasUnit)
 import Control.Subcategory.ObjectOf (class ObjectOf)
-import Control.Subcategory.Restrict (class Restrict, restrict)
+import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Type.Proxy (Proxy3(Proxy3))
 
 class (Applicative c m, Bind c m) <= Monad c m
@@ -36,7 +36,7 @@ liftM1
   => ObjectOf c v1
   => ObjectOf c (m v1)
   => ObjectOf c (c v0 v1)
-  => Restrict Function c
+  => Restrictable Function c
   => c v0 v1
   -> m v0
   -> m v1
@@ -56,7 +56,7 @@ ap
   => ObjectOf c v1
   => ObjectOf c (m v1)
   => ObjectOf c (c v0 v1)
-  => Restrict Function c
+  => Restrictable Function c
   => m (c v0 v1)
   -> m v0
   -> m v1
@@ -79,7 +79,7 @@ unlessM
   => ObjectOf c Boolean
   => ObjectOf c u
   => ObjectOf c (m u)
-  => Restrict Function c
+  => Restrictable Function c
   => m Boolean
   -> m u
   -> m u
@@ -98,7 +98,7 @@ unlessM'
   => ObjectOf c Boolean
   => ObjectOf c u
   => ObjectOf c (m u)
-  => Restrict Function c
+  => Restrictable Function c
   => Proxy3 c
   -> m Boolean
   -> m u
@@ -117,7 +117,7 @@ whenM
   => ObjectOf c Boolean
   => ObjectOf c u
   => ObjectOf c (m u)
-  => Restrict Function c
+  => Restrictable Function c
   => m Boolean
   -> m u
   -> m u
@@ -136,7 +136,7 @@ whenM'
   => ObjectOf c Boolean
   => ObjectOf c u
   => ObjectOf c (m u)
-  => Restrict Function c
+  => Restrictable Function c
   => Proxy3 c
   -> m Boolean
   -> m u
