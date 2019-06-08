@@ -9,8 +9,8 @@ module Control.Subcategory.HasDimap
   ) where
 
 import Control.Subcategory.Category (class Category)
-import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.Constituency (class ObjectOf)
+import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.Semigroupoid ((>>>))
 import Data.Newtype (class Newtype, wrap, unwrap)
 import Data.Profunctor (class Profunctor, dimap) as Unrestricted

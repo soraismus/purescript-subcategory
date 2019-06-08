@@ -10,11 +10,11 @@ module Control.Subcategory.HasApply
   ) where
 
 import Control.Apply (class Apply, apply) as Unrestricted
+import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasConst (class HasConst, const)
-import Control.Subcategory.Slackable (class Slackable, slacken)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.HasMap (class HasMap, map, (<$>))
-import Control.Subcategory.Constituency (class ObjectOf)
+import Control.Subcategory.Slackable (class Slackable, slacken)
 
 -- class Strength f t where
 --   strengthen :: forall v0 v1. t v0 (f v1) -> f (t v0 v1)

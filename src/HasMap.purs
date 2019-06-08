@@ -4,9 +4,9 @@ module Control.Subcategory.HasMap
   , mapFlipped , (<#>)
   ) where
 
-import Control.Subcategory.Slackable (class Slackable, slacken)
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
+import Control.Subcategory.Slackable (class Slackable, slacken)
 import Data.Functor (class Functor, map) as Unrestricted
 
 class HasMap
@@ -37,12 +37,12 @@ infixl 1 mapFlipped as <#>
 
 flap
   :: forall c f v0 v1
-   . Slackable c
-  => HasMap c f
+   . HasMap c f
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (c v0 v1)
   => Restrictable Function c
+  => Slackable c
   => f (c v0 v1)
   -> v0
   -> f v1

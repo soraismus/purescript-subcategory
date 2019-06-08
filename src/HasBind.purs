@@ -10,12 +10,11 @@ module Control.Subcategory.HasBind
 
 import Prelude (($))
 
-import Control.Bind (class Bind, class Discard, bind) as Unrestricted
-import Control.Subcategory.Slackable (class Slackable, slacken)
-import Control.Subcategory.HasIdentity (class HasIdentity, identity)
-import Control.Subcategory.HasUnit (class HasUnit)
+import Control.Bind (class Bind, bind) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
+import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
+import Control.Subcategory.Slackable (class Slackable, slacken)
 import Data.Function (flip)
 
 class HasBind c m where
@@ -62,12 +61,12 @@ join m = bindM identity
 composeKleisli
   :: forall c m v0 v1 v2
    . HasBind c m
-  => Slackable c
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (m v1)
   => ObjectOf c (m v2)
   => ObjectOf c (c v0 (m v1))
+  => Slackable c
   => c v0 (m v1)
   -> c v1 (m v2)
   -> v0
@@ -79,12 +78,12 @@ infixr 1 composeKleisli as >=>
 composeKleisliFlipped
   :: forall c m v0 v1 v2
    . HasBind c m
-  => Slackable c
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (m v1)
   => ObjectOf c (m v2)
   => ObjectOf c (c v0 (m v1))
+  => Slackable c
   => c v1 (m v2)
   -> c v0 (m v1)
   -> v0

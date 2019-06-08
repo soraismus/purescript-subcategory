@@ -13,12 +13,12 @@ import Prelude (($))
 import Control.Monad (class Monad) as Unrestricted
 import Control.Subcategory.Applicative (class Applicative)
 import Control.Subcategory.Bind (class Bind)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasBind (class HasBind, bind)
-import Control.Subcategory.Slackable (class Slackable, slacken)
 import Control.Subcategory.HasPure (class HasPure, pure', unless', when')
 import Control.Subcategory.HasUnit (class HasUnit)
-import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
+import Control.Subcategory.Slackable (class Slackable, slacken)
 import Type.Proxy (Proxy3(Proxy3))
 
 class (Applicative c m, Bind c m) <= Monad c m
@@ -30,13 +30,13 @@ instance monadUnrestricted
 ap
   :: forall c m v0 v1
    . HasBind c m
-  => Slackable c
   => HasPure c m
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (m v1)
   => ObjectOf c (c v0 v1)
   => Restrictable Function c
+  => Slackable c
   => m (c v0 v1)
   -> m v0
   -> m v1
@@ -54,13 +54,13 @@ ap mf mx =
 liftM1
   :: forall c m v0 v1
    . HasBind c m
-  => Slackable c
   => HasPure c m
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (m v1)
   => ObjectOf c (c v0 v1)
   => Restrictable Function c
+  => Slackable c
   => c v0 v1
   -> m v0
   -> m v1
