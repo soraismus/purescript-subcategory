@@ -1,4 +1,4 @@
-module Control.Restricted.ObjectOf
+module Control.Subcategory.ObjectOf
   ( class ObjectOf
   , class OperatorOf
   ) where

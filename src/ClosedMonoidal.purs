@@ -1,4 +1,4 @@
-module Control.Restricted.ClosedMonoidal
+module Control.Subcategory.ClosedMonoidal
   ( class ClosedSemimonoidal
   , class HasCurriedEval
   , class HasCurry
@@ -13,8 +13,8 @@ module Control.Restricted.ClosedMonoidal
 
 import Prelude ((<<<))
 
-import Control.Restricted.HasUnit (class HasUnit)
-import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Subcategory.HasUnit (class HasUnit)
+import Control.Subcategory.ObjectOf (class ObjectOf)
 import Data.Function (flip) as Function
 import Data.Tuple (Tuple)
 import Data.Tuple (curry, swap, uncurry) as Tuple

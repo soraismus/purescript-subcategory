@@ -1,4 +1,4 @@
-module Control.Restricted.Monad
+module Control.Subcategory.Monad
   ( class Monad
   , ap
   , liftM1
@@ -11,14 +11,14 @@ module Control.Restricted.Monad
 import Prelude (($))
 
 import Control.Monad (class Monad) as Unrestricted
-import Control.Restricted.Applicative (class Applicative)
-import Control.Restricted.Bind (class Bind)
-import Control.Restricted.HasBind (class HasBind, bind)
-import Control.Restricted.HasEval (class HasEval, eval)
-import Control.Restricted.HasPure (class HasPure, pure, unless', when')
-import Control.Restricted.HasUnit (class HasUnit)
-import Control.Restricted.ObjectOf (class ObjectOf)
-import Control.Restricted.Restrict (class Restrict, restrict)
+import Control.Subcategory.Applicative (class Applicative)
+import Control.Subcategory.Bind (class Bind)
+import Control.Subcategory.HasBind (class HasBind, bind)
+import Control.Subcategory.HasEval (class HasEval, eval)
+import Control.Subcategory.HasPure (class HasPure, pure, unless', when')
+import Control.Subcategory.HasUnit (class HasUnit)
+import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Restrict (class Restrict, restrict)
 import Type.Proxy (Proxy3(Proxy3))
 
 class (Applicative c m, Bind c m) <= Monad c m

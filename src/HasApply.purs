@@ -1,4 +1,4 @@
-module Control.Restricted.HasApply
+module Control.Subcategory.HasApply
   ( class HasApply
   , apply       , (<*>)
   , applyFirst  , (<*)
@@ -10,11 +10,11 @@ module Control.Restricted.HasApply
   ) where
 
 import Control.Apply (class Apply, apply) as Unrestricted
-import Control.Restricted.HasConst (class HasConst, const)
-import Control.Restricted.HasEval (class HasEval, eval)
-import Control.Restricted.HasIdentity (class HasIdentity, identity)
-import Control.Restricted.HasMap (class HasMap, map, (<$>))
-import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Subcategory.HasConst (class HasConst, const)
+import Control.Subcategory.HasEval (class HasEval, eval)
+import Control.Subcategory.HasIdentity (class HasIdentity, identity)
+import Control.Subcategory.HasMap (class HasMap, map, (<$>))
+import Control.Subcategory.ObjectOf (class ObjectOf)
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)
 

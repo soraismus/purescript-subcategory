@@ -1,4 +1,4 @@
-module Control.Restricted.HasIdentity
+module Control.Subcategory.HasIdentity
   ( class HasIdentity
   , identity
   ) where
@@ -6,7 +6,7 @@ module Control.Restricted.HasIdentity
 import Control.Category (identity) as Unrestricted
 import Record.Builder (Builder)
 
--- | The type `p` satisfies reflexivity.
+-- | The type `p` is a relation that satisfies reflexivity.
 class HasIdentity (p :: Type -> Type -> Type) where
   identity :: forall a. p a a
 

@@ -1,9 +1,9 @@
-module Control.Restricted.HasConst
+module Control.Subcategory.HasConst
   ( class HasConst
   , const
   ) where
 
-import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Subcategory.ObjectOf (class ObjectOf)
 import Data.Function (const) as Function
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)

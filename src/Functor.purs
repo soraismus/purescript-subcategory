@@ -1,9 +1,9 @@
-module Control.Restricted.Functor
+module Control.Subcategory.Functor
   ( class Functor
   ) where
 
-import Control.Restricted.Category (class Category)
-import Control.Restricted.HasMap (class HasMap)
+import Control.Subcategory.Category (class Category)
+import Control.Subcategory.HasMap (class HasMap)
 import Record.Builder (Builder)
 
 class (Category c, HasMap c f) <= Functor c f

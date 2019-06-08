@@ -1,9 +1,9 @@
-module Control.Restricted.Closed
+module Control.Subcategory.Closed
   ( class Closed
   , assertClosed
   ) where
 
-import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Subcategory.ObjectOf (class ObjectOf)
 import Data.Unit (Unit)
 import Data.Unit (unit) as Unit
 import Record.Builder (Builder)

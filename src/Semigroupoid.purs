@@ -1,10 +1,10 @@
-module Control.Restricted.Semigroupoid
+module Control.Subcategory.Semigroupoid
   ( class Semigroupoid
   , compose        , (<<<)
   , composeFlipped , (>>>)
   ) where
 
-import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Subcategory.ObjectOf (class ObjectOf)
 import Control.Semigroupoid (compose) as Unrestricted
 import Record.Builder (Builder)
 

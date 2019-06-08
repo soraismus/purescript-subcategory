@@ -1,4 +1,4 @@
-module Control.Restricted.HasBind
+module Control.Subcategory.HasBind
   ( class HasBind
   , class Discard
   , class Discard_
@@ -15,11 +15,11 @@ module Control.Restricted.HasBind
 import Prelude (($))
 
 import Control.Bind (class Bind, class Discard, bind) as Unrestricted
-import Control.Restricted.HasEval (class HasEval, eval)
-import Control.Restricted.HasIdentity (class HasIdentity, identity)
-import Control.Restricted.HasUnit (class HasUnit)
-import Control.Restricted.ObjectOf (class ObjectOf)
-import Control.Restricted.Restrict (class Restrict, restrict)
+import Control.Subcategory.HasEval (class HasEval, eval)
+import Control.Subcategory.HasIdentity (class HasIdentity, identity)
+import Control.Subcategory.HasUnit (class HasUnit)
+import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Restrict (class Restrict, restrict)
 import Data.Function (flip)
 
 class HasBind c m where

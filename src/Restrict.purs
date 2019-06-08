@@ -1,11 +1,10 @@
-module Control.Restricted.Restrict
+module Control.Subcategory.Restrict
   ( class Restrict
   , restrict
   ) where
 
-import Prelude (identity)
-
-import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Category (identity) as Unrestricted
+import Control.Subcategory.ObjectOf (class ObjectOf)
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)
 
@@ -30,4 +29,4 @@ instance restrictFnBuilder :: Restrict Function Builder where
   restrict = unsafeCoerce
 
 instance restrictFnFn :: Restrict Function Function where
-  restrict = identity
+  restrict = Unrestricted.identity

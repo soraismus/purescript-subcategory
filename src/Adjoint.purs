@@ -1,4 +1,4 @@
-module Control.Restricted.Adjoint
+module Control.Subcategory.Adjoint
   ( class Adjoint
   , class HasToLeft
   , class HasToRight
@@ -7,13 +7,13 @@ module Control.Restricted.Adjoint
   )
   where
 
-import Control.Restricted.ClosedMonoidal
+import Control.Subcategory.ClosedMonoidal
   ( class HasCurry
   , class HasUncurry
   , curry
   , uncurry
   )
-import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Subcategory.ObjectOf (class ObjectOf)
 
 class HasToLeft
   (c0 :: Type -> Type -> Type)

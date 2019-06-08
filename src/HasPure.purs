@@ -1,4 +1,4 @@
-module Control.Restricted.HasPure
+module Control.Subcategory.HasPure
   ( class HasPure
   , liftA1
   , pure
@@ -9,9 +9,9 @@ module Control.Restricted.HasPure
   ) where
 
 import Control.Applicative (class Applicative, pure) as Unrestricted
-import Control.Restricted.HasApply (class HasApply, (<*>))
-import Control.Restricted.HasUnit (class HasUnit, unit)
-import Control.Restricted.ObjectOf (class ObjectOf)
+import Control.Subcategory.HasApply (class HasApply, (<*>))
+import Control.Subcategory.HasUnit (class HasUnit, unit)
+import Control.Subcategory.ObjectOf (class ObjectOf)
 import Type.Proxy (Proxy3(Proxy3))
 
 class HasPure c f where

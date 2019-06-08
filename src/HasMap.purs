@@ -1,12 +1,12 @@
-module Control.Restricted.HasMap
+module Control.Subcategory.HasMap
   ( class HasMap
   , map        , (<$>)
   , mapFlipped , (<#>)
   ) where
 
-import Control.Restricted.HasEval (class HasEval, eval)
-import Control.Restricted.ObjectOf (class ObjectOf, class OperatorOf)
-import Control.Restricted.Restrict (class Restrict, restrict)
+import Control.Subcategory.HasEval (class HasEval, eval)
+import Control.Subcategory.ObjectOf (class ObjectOf, class OperatorOf)
+import Control.Subcategory.Restrict (class Restrict, restrict)
 import Data.Functor (class Functor, map) as Unrestricted
 import Record.Builder (Builder)
 

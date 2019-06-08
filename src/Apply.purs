@@ -1,10 +1,10 @@
-module Control.Restricted.Apply
+module Control.Subcategory.Apply
   ( class Apply
   ) where
 
 import Control.Apply (class Apply) as Unrestricted
-import Control.Restricted.HasApply (class HasApply)
-import Control.Restricted.Functor (class Functor)
+import Control.Subcategory.HasApply (class HasApply)
+import Control.Subcategory.Functor (class Functor)
 
 class (Functor c f, HasApply c f) <= Apply c f
 

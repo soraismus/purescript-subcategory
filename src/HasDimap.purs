@@ -1,4 +1,4 @@
-module Control.Restricted.HasDimap
+module Control.Subcategory.HasDimap
   ( class HasDimap
   , arr
   , dimap
@@ -8,10 +8,10 @@ module Control.Restricted.HasDimap
   , wrapIso
   ) where
 
-import Control.Restricted.Category (class Category)
-import Control.Restricted.HasIdentity (class HasIdentity, identity)
-import Control.Restricted.ObjectOf (class ObjectOf)
-import Control.Restricted.Semigroupoid ((>>>))
+import Control.Subcategory.Category (class Category)
+import Control.Subcategory.HasIdentity (class HasIdentity, identity)
+import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Semigroupoid ((>>>))
 import Data.Newtype (class Newtype, wrap, unwrap)
 import Data.Profunctor (class Profunctor, dimap) as Unrestricted
 

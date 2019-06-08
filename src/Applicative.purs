@@ -1,10 +1,10 @@
-module Control.Restricted.Applicative
+module Control.Subcategory.Applicative
   ( class Applicative
   ) where
 
 import Control.Applicative (class Applicative) as Unrestricted
-import Control.Restricted.Apply (class Apply)
-import Control.Restricted.HasPure (class HasPure)
+import Control.Subcategory.Apply (class Apply)
+import Control.Subcategory.HasPure (class HasPure)
 
 class (Apply c f, HasPure c f) <= Applicative c f
 
