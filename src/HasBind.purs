@@ -11,7 +11,7 @@ module Control.Restricted.HasBind
 
 import Prelude (($))
 
-import Control.Bind (class Bind, bind) as Unrestricted
+import Control.Bind (class Bind, class Discard, bind, discard) as Unrestricted
 import Control.Restricted.HasEval (class HasEval, eval)
 import Control.Restricted.HasIdentity (class HasIdentity, identity)
 import Control.Restricted.ObjectOf (class ObjectOf)
@@ -28,17 +28,6 @@ class HasBind c m where
     -> m v1
 
 infixl 1 bind as >>=
-
-type DictHasBind c m =
-  { bind
-      :: forall v0 v1
-       . HasBind c m
-      => ObjectOf c v0
-      => ObjectOf c (m v1)
-      => m v0
-      -> c v0 (m v1)
-      -> m v1
-  }
 
 bindFlipped
   :: forall c m v0 v1
@@ -58,6 +47,16 @@ instance bindUnrestricted
   where
   bind = Unrestricted.bind
 
+-- class Discard_ c f a where
+--   discard'
+--     :: forall v
+--      . HasBind c f
+--     => ObjectOf c a
+--     => ObjectOf c (f v)
+--     => f a
+--     -> c a (f v)
+--     -> f v
+--
 -- class Discard c a where
 --   discard
 --     :: forall f v
@@ -67,12 +66,15 @@ instance bindUnrestricted
 --     => f a
 --     -> c a (f v)
 --     -> f v
-
+--
 -- instance discardUnrestricted
---   :: Unrestricted.Discard Unit
---   => Discard Function Unit
+--   :: ( Unrestricted.Discard a
+--      , HasBind Function f
+--      , Unrestricted.Bind f
+--      )
+--   => Discard_ Function f a
 --   where
---   discard = Unrestricted.bind
+--   discard' = Unrestricted.bind
 
 join
   :: forall c m v
@@ -81,10 +83,10 @@ join
   => ObjectOf c (m v)
   => m (m v)
   -> m v
-join m = dictHasBind.bind m identity
+join m = bindM identity
   where
-  dictHasBind :: DictHasBind c m
-  dictHasBind = { bind }
+  bindM :: c (m v) (m v) -> m v
+  bindM = bind m
 
 composeKleisli
   :: forall c m v0 v1 v2
@@ -130,8 +132,8 @@ ifM
   -> m v
   -> m v
   -> m v
-ifM cond t f =
-    dictHasBind.bind cond $ restrict \cond' -> if cond' then t else f
+ifM mCond mt mf =
+    bindCond $ restrict (if _ then mt else mf)
   where
-  dictHasBind :: DictHasBind c m
-  dictHasBind = { bind }
+  bindCond :: c Boolean (m v) -> m v
+  bindCond = bind mCond

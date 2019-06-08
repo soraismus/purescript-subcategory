@@ -3,7 +3,6 @@ module Control.Restricted.HasEval
   , eval
   ) where
 
-import Control.Restricted.Closed (class Closed)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Data.Function (apply) as Function
 import Record.Builder (Builder)

@@ -37,46 +37,6 @@ class HasApply c f where
 
 infixl 4 apply as <*>
 
-type DictHasApply c f =
-  { apply
-      :: forall v0 v1
-       . HasApply c f
-      => ObjectOf c v0
-      => ObjectOf c v1
-      => ObjectOf c (c v0 v1)
-      => f (c v0 v1)
-      -> f v0
-      -> f v1
-  }
-
-type DictHasMap c f =
-  { map
-      :: forall v0 v1
-       . HasMap c f
-      => ObjectOf c v0
-      => ObjectOf c v1
-      => c v0 v1
-      -> f v0
-      -> f v1
-  }
-
-instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
-  apply = Unrestricted.apply
-
-instance applyBuilder
-  :: ObjectOf Builder r
-  => HasApply Builder (Builder r)
-  where
-  apply ff fx = mkBuilder \r -> eval (eval ff r) (eval fx r)
-    where
-    mkBuilder
-      :: forall v0 v1
-       . ObjectOf Builder v0
-      => ObjectOf Builder v1
-      => (v0 -> v1)
-      -> (Builder v0 v1)
-    mkBuilder = unsafeCoerce
-
 applyFirst
   :: forall c f v0 v1
    . HasApply c f
@@ -88,10 +48,10 @@ applyFirst
   => f v0
   -> f v1
   -> f v0
-applyFirst x0 x1 = dictHasApply.apply (const <$> x0) x1
+applyFirst x0 x1 = apply constX0 x1
   where
-  dictHasApply :: DictHasApply c f
-  dictHasApply = { apply }
+  constX0 :: f (c v1 v0)
+  constX0 = const <$> x0
 
 infixl 4 applyFirst as <*
 
@@ -111,14 +71,10 @@ applySecond
   -> f v1
   -> f v1
 applySecond x0 x1 =
-    dictHasApply.apply
-      (dictHasMap.map (eval const identity) x0)
-      x1
+    apply (map evalConstIdentity x0) x1
   where
-  dictHasMap :: DictHasMap c f
-  dictHasMap = { map }
-  dictHasApply :: DictHasApply c f
-  dictHasApply = { apply }
+  evalConstIdentity :: c v0 (c v1 v1)
+  evalConstIdentity = eval const identity
 
 infixl 4 applySecond as *>
 
@@ -195,3 +151,20 @@ lift5
   -> f v4
   -> f v5
 lift5 f x0 x1 x2 x3 x4 = f <$> x0 <*> x1 <*> x2 <*> x3 <*> x4
+
+instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
+  apply = Unrestricted.apply
+
+instance applyBuilder
+  :: ObjectOf Builder r
+  => HasApply Builder (Builder r)
+  where
+  apply ff fx = mkBuilder \r -> eval (eval ff r) (eval fx r)
+    where
+    mkBuilder
+      :: forall v0 v1
+       . ObjectOf Builder v0
+      => ObjectOf Builder v1
+      => (v0 -> v1)
+      -> (Builder v0 v1)
+    mkBuilder = unsafeCoerce

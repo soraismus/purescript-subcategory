@@ -3,26 +3,23 @@ module Control.Restricted.HasPure
   , liftA1
   , pure
   , unless
+  , unless'
   , when
+  , when'
   ) where
-
-import Prelude ((+))
 
 import Control.Applicative (class Applicative, pure) as Unrestricted
 import Control.Restricted.HasApply (class HasApply, (<*>))
-import Control.Restricted.HasUnit (class HasUnit)
+import Control.Restricted.HasUnit (class HasUnit, unit)
 import Control.Restricted.ObjectOf (class ObjectOf)
-import Data.Unit (Unit)
-import Data.Unit (unit) as Unit
+import Type.Proxy (Proxy3(Proxy3))
 
 class HasPure c f where
-  pure :: forall v. ObjectOf c v => v -> f v
+  pure :: forall v. ObjectOf c v => Proxy3 c -> v -> f v
 
-type DictHasPure c f =
-  { pure :: forall v. HasPure c f => ObjectOf c v => v -> f v }
-
-type DictHasUnit c u =
-  { unit :: HasUnit c u => ObjectOf c u => Unit -> u }
+-- | S combinator
+inContext :: forall a b c. a -> (a -> b -> c) -> (a -> b) -> c
+inContext context f0 f1 = f0 context (f1 context)
 
 liftA1
   :: forall c f v0 v1
@@ -31,45 +28,59 @@ liftA1
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (c v0 v1)
-  => DictHasPure c f
-  -> c v0 v1
+  => c v0 v1
   -> f v0
   -> f v1
-liftA1 { pure } f x = pure f <*> x
-
--- g :: Array Int -> Array Int
--- g = liftA1 { pure } (\i -> i + 1)
+liftA1 f x = pure (Proxy3 :: Proxy3 c) f <*> x
 
 unless
-  :: forall c m u
-   . HasPure c m
+  :: forall c f u
+   . HasPure c f
   => HasUnit c u
   => ObjectOf c u
-  => DictHasPure c m
-  -> DictHasUnit c u
+  => Boolean
+  -> f u
+  -> f u
+unless false fu = fu
+unless true  _  = inContext (Proxy3 :: Proxy3 c) pure unit
+
+unless'
+  :: forall c f u
+   . HasPure c f
+  => HasUnit c u
+  => ObjectOf c u
+  => Proxy3 c
   -> Boolean
-  -> m u
-  -> m u
-unless _        _        false m = m
-unless { pure } { unit } true  _ = pure (unit Unit.unit)
+  -> f u
+  -> f u
+unless' _ false fu = fu
+unless' c true  _  = inContext c pure unit
 
 when
-  :: forall c m u
-   . HasPure c m
+  :: forall c f u
+   . HasPure c f
   => HasUnit c u
   => ObjectOf c u
-  => DictHasPure c m
-  -> DictHasUnit c u
-  -> Boolean
-  -> m u
-  -> m u
-when _        _        true  m = m
-when { pure } { unit } false _ = pure (unit Unit.unit)
+  => Boolean
+  -> f u
+  -> f u
+when true  fu = fu
+when false _  = inContext (Proxy3 :: Proxy3 c) pure unit
 
-instance hasPureFunctionArray :: HasPure Function Array where
-  pure = Unrestricted.pure
-else instance hasPureUnrestricted
+when'
+  :: forall c f u
+   . HasPure c f
+  => HasUnit c u
+  => ObjectOf c u
+  => Proxy3 c
+  -> Boolean
+  -> f u
+  -> f u
+when' _ true  fu = fu
+when' c false _  = inContext c pure unit
+
+instance hasPureUnrestricted
   :: Unrestricted.Applicative f
   => HasPure Function f
   where
-  pure = Unrestricted.pure
+  pure _ = Unrestricted.pure

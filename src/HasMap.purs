@@ -24,17 +24,6 @@ class HasMap
 
 infixl 4 map as <$>
 
-type DictHasMap c f =
-  { map
-      :: forall v0 v1
-       . HasMap c f
-      => ObjectOf c v0
-      => ObjectOf c v1
-      => c v0 v1
-      -> f v0
-      -> f v1
-  }
-
 mapFlipped
   :: forall c f v0 v1
    . HasMap c f
@@ -58,11 +47,10 @@ flap
   => f (c v0 v1)
   -> v0
   -> f v1
-flap ff x =
-  dictHasMap.map (restrict (\f -> eval f x)) ff
+flap ff x = map consumeX ff
   where
-  dictHasMap :: DictHasMap c f
-  dictHasMap = { map }
+  consumeX :: c (c v0 v1) v1
+  consumeX = restrict (\f -> eval f x)
 
 infixl 4 flap as <@>
 
