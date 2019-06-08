@@ -1,6 +1,7 @@
 module Control.Subcategory.HasUnit
   ( class HasUnit
   , unit
+  , unit'
   ) where
 
 import Control.Subcategory.Constituency (class ObjectOf)
@@ -14,10 +15,13 @@ class HasUnit
   (u :: Type)
   | c -> u
   where
-  unit :: ObjectOf c u => Proxy3 c -> u
+  unit :: ObjectOf c u => u
+  unit' :: ObjectOf c u => Proxy3 c -> u
 
 instance hasUnitFn :: HasUnit Function Unit where
-  unit _ = Unit.unit
+  unit = Unit.unit
+  unit' _ = Unit.unit
 
 instance hasUnitBuilder :: HasUnit Builder (Record ()) where
-  unit _ = {}
+  unit = {}
+  unit' _ = {}

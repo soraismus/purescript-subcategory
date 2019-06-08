@@ -15,7 +15,7 @@ import Control.Subcategory.Applicative (class Applicative)
 import Control.Subcategory.Bind (class Bind)
 import Control.Subcategory.HasBind (class HasBind, bind)
 import Control.Subcategory.Slackable (class Slackable, slacken)
-import Control.Subcategory.HasPure (class HasPure, pure, unless', when')
+import Control.Subcategory.HasPure (class HasPure, pure', unless', when')
 import Control.Subcategory.HasUnit (class HasUnit)
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
@@ -41,7 +41,7 @@ liftM1
   -> m v0
   -> m v1
 liftM1 f mx =
-    bindMx $ restrict \x -> pure c $ slacken f x
+    bindMx $ restrict \x -> pure' c $ slacken f x
   where
   bindMx :: c v0 (m v1) -> m v1
   bindMx = bind mx
@@ -63,7 +63,7 @@ ap
 ap mf mx =
   bindF
     $ restrict \f -> bindX
-    $ restrict \x -> pure c $ slacken f x
+    $ restrict \x -> pure' c $ slacken f x
   where
   bindF :: c (c v0 v1) (m v1) -> m v1
   bindF = bind mf
