@@ -15,9 +15,10 @@ import Prelude ((<<<))
 
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasUnit (class HasUnit)
-import Data.Function (flip) as Function
+import Data.Function (flip, identity) as Function
 import Data.Tuple (Tuple)
 import Data.Tuple (curry, swap, uncurry) as Tuple
+import Data.Unit (Unit)
 
 class Semimonoidal
   (c         :: Type -> Type -> Type)
@@ -32,6 +33,9 @@ class Semimonoidal
     => bifunctor v0 v1
     -> tensor v0 v1
 
+instance semimonoidalFunction :: Semimonoidal Function t t where
+  join = Function.identity
+
 class
   ( HasUnit c u1
   , ObjectOf c u1
@@ -43,11 +47,16 @@ class
       where
       extrinsicUnit :: ObjectOf c u1 => u0 -> u1
 
+instance hasExtrinsicUnitFunction :: HasExtrinsicUnit Function Unit Unit where
+  extrinsicUnit = Function.identity
+
 class
   ( Semimonoidal c bifunctor tensor
   , HasExtrinsicUnit c u0 u1
   )
   <= Monoidal c bifunctor tensor u0 u1
+
+instance monoidalFunction :: Monoidal Function t t Unit Unit
 
 class HasCurry
   (c      :: Type -> Type -> Type)

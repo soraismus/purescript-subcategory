@@ -2,10 +2,10 @@ module Control.Subcategory.HasBind
   ( class HasBind
   , bind                  , (>>=)
   , bindFlipped           , (=<<)
-  , join
   , composeKleisli        , (>=>)
   , composeKleisliFlipped , (<=<)
   , ifM
+  , join
   ) where
 
 import Prelude (($))
