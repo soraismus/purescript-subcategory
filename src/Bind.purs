@@ -8,6 +8,4 @@ import Control.Subcategory.HasBind (class HasBind)
 
 class (Apply c f, HasBind c f) <= Bind c f
 
-instance bindUnrestricted
-  :: Unrestricted.Bind m
-  => Bind Function m
+instance bindUnrestricted :: Unrestricted.Bind m => Bind Function m

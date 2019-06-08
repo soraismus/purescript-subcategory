@@ -5,10 +5,9 @@ module Control.Subcategory.HasMap
   ) where
 
 import Control.Subcategory.Slackable (class Slackable, slacken)
-import Control.Subcategory.Constituency (class ObjectOf, class OperatorOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Data.Functor (class Functor, map) as Unrestricted
-import Record.Builder (Builder)
 
 class HasMap
   (c :: Type -> Type -> Type)
@@ -59,11 +58,3 @@ instance hasMapUnrestricted
   => HasMap Function f
   where
   map = Unrestricted.map
-
-instance hasMapBuilder
-  :: ( Unrestricted.Functor f
-     , OperatorOf Builder f
-     )
-  => HasMap Builder f
-  where
-  map builder = Unrestricted.map (slacken builder)

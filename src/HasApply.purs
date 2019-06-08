@@ -15,8 +15,6 @@ import Control.Subcategory.Slackable (class Slackable, slacken)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.HasMap (class HasMap, map, (<$>))
 import Control.Subcategory.Constituency (class ObjectOf)
-import Record.Builder (Builder)
-import Unsafe.Coerce (unsafeCoerce)
 
 -- class Strength f t where
 --   strengthen :: forall v0 v1. t v0 (f v1) -> f (t v0 v1)
@@ -200,17 +198,3 @@ lift5 f x0 x1 x2 x3 x4 = f <$> x0 <*> x1 <*> x2 <*> x3 <*> x4
 
 instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
   apply = Unrestricted.apply
-
-instance applyBuilder
-  :: ObjectOf Builder r
-  => HasApply Builder (Builder r)
-  where
-  apply ff fx = mkBuilder \r -> slacken (slacken ff r) (slacken fx r)
-    where
-    mkBuilder
-      :: forall v0 v1
-       . ObjectOf Builder v0
-      => ObjectOf Builder v1
-      => (v0 -> v1)
-      -> (Builder v0 v1)
-    mkBuilder = unsafeCoerce

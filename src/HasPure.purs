@@ -8,12 +8,11 @@ module Control.Subcategory.HasPure
   , when'
   ) where
 
-import Prelude (const)
-
 import Control.Applicative (class Applicative, pure) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasUnit (class HasUnit, unit')
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
+import Data.Function (const) as Function
 import Type.Proxy (Proxy3(Proxy3))
 
 -- | The class `HasPure` registers for a type `c` and a type constructor `f`
@@ -35,8 +34,8 @@ else instance hasPure
      )
   => HasPure c (c v)
   where
-  pure x = restrict (const x)
-  pure' _ x = restrict (const x)
+  pure x = restrict (Function.const x)
+  pure' _ x = restrict (Function.const x)
 
 inContext :: forall a b c. a -> (a -> b -> c) -> (a -> b) -> c
 inContext context f0 f1 = f0 context (f1 context)
