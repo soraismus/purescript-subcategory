@@ -14,7 +14,7 @@ import Control.Subcategory.HasConst (class HasConst, const)
 import Control.Subcategory.HasEval (class HasEval, eval)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.HasMap (class HasMap, map, (<$>))
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)
 

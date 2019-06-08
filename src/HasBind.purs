@@ -18,7 +18,7 @@ import Control.Bind (class Bind, class Discard, bind) as Unrestricted
 import Control.Subcategory.HasEval (class HasEval, eval)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.HasUnit (class HasUnit)
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Data.Function (flip)
 

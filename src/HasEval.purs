@@ -3,7 +3,7 @@ module Control.Subcategory.HasEval
   , eval
   ) where
 
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Data.Function (apply) as Function
 import Record.Builder (Builder)
 import Record.Builder (build) as Builder

@@ -4,7 +4,7 @@ module Control.Subcategory.Restrictable
   ) where
 
 import Control.Category (identity) as Unrestricted
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)
 

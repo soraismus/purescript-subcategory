@@ -3,7 +3,7 @@ module Control.Subcategory.HasConst
   , const
   ) where
 
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Data.Function (const) as Function
 import Record.Builder (Builder)
 import Unsafe.Coerce (unsafeCoerce)

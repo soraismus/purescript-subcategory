@@ -4,8 +4,8 @@ module Control.Subcategory.Semigroupoid
   , composeFlipped , (>>>)
   ) where
 
-import Control.Subcategory.ObjectOf (class ObjectOf)
 import Control.Semigroupoid (compose) as Unrestricted
+import Control.Subcategory.Constituency (class ObjectOf)
 import Record.Builder (Builder)
 
 class Semigroupoid s where

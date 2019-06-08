@@ -17,7 +17,7 @@ import Control.Subcategory.HasBind (class HasBind, bind)
 import Control.Subcategory.HasEval (class HasEval, eval)
 import Control.Subcategory.HasPure (class HasPure, pure, unless', when')
 import Control.Subcategory.HasUnit (class HasUnit)
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Type.Proxy (Proxy3(Proxy3))
 

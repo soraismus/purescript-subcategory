@@ -1,4 +1,4 @@
-module Control.Subcategory.ObjectOf
+module Control.Subcategory.Constituency
   ( class ObjectOf
   , class OperatorOf
   ) where

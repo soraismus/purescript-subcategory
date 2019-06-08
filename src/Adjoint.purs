@@ -13,7 +13,7 @@ import Control.Subcategory.ClosedMonoidal
   , curry
   , uncurry
   )
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 
 class HasToLeft
   (c0 :: Type -> Type -> Type)

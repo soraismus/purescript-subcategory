@@ -5,7 +5,7 @@ module Control.Subcategory.HasMap
   ) where
 
 import Control.Subcategory.HasEval (class HasEval, eval)
-import Control.Subcategory.ObjectOf (class ObjectOf, class OperatorOf)
+import Control.Subcategory.Constituency (class ObjectOf, class OperatorOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Data.Functor (class Functor, map) as Unrestricted
 import Record.Builder (Builder)

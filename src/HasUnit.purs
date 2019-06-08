@@ -3,7 +3,7 @@ module Control.Subcategory.HasUnit
   , unit
   ) where
 
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Data.Unit (Unit)
 import Data.Unit (unit) as Unit
 import Record.Builder (Builder)

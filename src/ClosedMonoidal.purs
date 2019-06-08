@@ -14,7 +14,7 @@ module Control.Subcategory.ClosedMonoidal
 import Prelude ((<<<))
 
 import Control.Subcategory.HasUnit (class HasUnit)
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Data.Function (flip) as Function
 import Data.Tuple (Tuple)
 import Data.Tuple (curry, swap, uncurry) as Tuple

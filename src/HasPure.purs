@@ -13,7 +13,7 @@ import Prelude (const)
 import Control.Applicative (class Applicative, pure) as Unrestricted
 import Control.Subcategory.HasApply (class HasApply, (<*>))
 import Control.Subcategory.HasUnit (class HasUnit, unit)
-import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Type.Proxy (Proxy3(Proxy3))
 
