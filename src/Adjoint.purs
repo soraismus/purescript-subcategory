@@ -7,13 +7,9 @@ module Control.Subcategory.Adjoint
   )
   where
 
-import Control.Subcategory.ClosedMonoidal
-  ( class HasCurry
-  , class HasUncurry
-  , curry
-  , uncurry
-  )
 import Control.Subcategory.Constituency (class ObjectOf)
+import Control.Subcategory.HasCurry (class HasCurry, curry)
+import Control.Subcategory.HasUncurry (class HasUncurry, uncurry)
 
 class HasToLeft
   (c0 :: Type -> Type -> Type)

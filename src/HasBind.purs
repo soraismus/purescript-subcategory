@@ -1,6 +1,7 @@
 module Control.Subcategory.HasBind
   ( class HasBind
   , bind                  , (>>=)
+  , bind'                 , (>>>=)
   , bindFlipped           , (=<<)
   , composeKleisli        , (>=>)
   , composeKleisliFlipped , (<=<)
@@ -27,6 +28,22 @@ class HasBind c m where
     -> m v1
 
 infixl 1 bind as >>=
+
+bind'
+  :: forall c m v0 v1
+   . HasBind c m
+  => ObjectOf c v0
+  => ObjectOf c (m v1)
+  => Restrictable Function c
+  => m v0
+  -> (v0 -> (m v1))
+  -> m v1
+bind' mx mf = bindX (restrict mf)
+  where
+  bindX :: c v0 (m v1) -> m v1
+  bindX = bind mx
+
+infixl 1 bind as >>>=
 
 bindFlipped
   :: forall c m v0 v1
