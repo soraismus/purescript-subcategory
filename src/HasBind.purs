@@ -1,8 +1,11 @@
 module Control.Restricted.HasBind
   ( class HasBind
+  , class Discard
+  , class Discard_
   , bind                  , (>>=)
   , bindFlipped           , (=<<)
---   , class Discard, discard
+  , discard
+  , discard'
   , join
   , composeKleisli        , (>=>)
   , composeKleisliFlipped , (<=<)
@@ -11,9 +14,10 @@ module Control.Restricted.HasBind
 
 import Prelude (($))
 
-import Control.Bind (class Bind, class Discard, bind, discard) as Unrestricted
+import Control.Bind (class Bind, class Discard, bind) as Unrestricted
 import Control.Restricted.HasEval (class HasEval, eval)
 import Control.Restricted.HasIdentity (class HasIdentity, identity)
+import Control.Restricted.HasUnit (class HasUnit)
 import Control.Restricted.ObjectOf (class ObjectOf)
 import Control.Restricted.Restrict (class Restrict, restrict)
 import Data.Function (flip)
@@ -47,34 +51,37 @@ instance bindUnrestricted
   where
   bind = Unrestricted.bind
 
--- class Discard_ c f a where
---   discard'
---     :: forall v
---      . HasBind c f
---     => ObjectOf c a
---     => ObjectOf c (f v)
---     => f a
---     -> c a (f v)
---     -> f v
---
--- class Discard c a where
---   discard
---     :: forall f v
---      . HasBind c f
---     => ObjectOf c a
---     => ObjectOf c (f v)
---     => f a
---     -> c a (f v)
---     -> f v
---
--- instance discardUnrestricted
---   :: ( Unrestricted.Discard a
---      , HasBind Function f
---      , Unrestricted.Bind f
---      )
---   => Discard_ Function f a
---   where
---   discard' = Unrestricted.bind
+class Discard_ c f a where
+  discard'
+    :: forall v
+     . HasBind c f
+    => ObjectOf c a
+    => ObjectOf c (f v)
+    => f a
+    -> c a (f v)
+    -> f v
+
+instance discard_Unrestricted
+  :: ( HasBind Function f
+     , Unrestricted.Bind f
+     , Unrestricted.Discard a
+     )
+  => Discard_ Function f a
+  where
+  discard' = Unrestricted.bind
+
+class Discard c a where
+  discard
+    :: forall f v
+     . HasBind c f
+    => ObjectOf c a
+    => ObjectOf c (f v)
+    => f a
+    -> c a (f v)
+    -> f v
+
+instance discardUnit :: HasUnit c u => Discard c u where
+  discard = bind
 
 join
   :: forall c m v
