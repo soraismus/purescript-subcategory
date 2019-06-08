@@ -8,16 +8,18 @@ module Control.Subcategory.HasPure
   , when'
   ) where
 
+import Prelude (const)
+
 import Control.Applicative (class Applicative, pure) as Unrestricted
 import Control.Subcategory.HasApply (class HasApply, (<*>))
 import Control.Subcategory.HasUnit (class HasUnit, unit)
 import Control.Subcategory.ObjectOf (class ObjectOf)
+import Control.Subcategory.Restrict (class Restrict, restrict)
 import Type.Proxy (Proxy3(Proxy3))
 
 class HasPure c f where
   pure :: forall v. ObjectOf c v => Proxy3 c -> v -> f v
 
--- | S combinator
 inContext :: forall a b c. a -> (a -> b -> c) -> (a -> b) -> c
 inContext context f0 f1 = f0 context (f1 context)
 
@@ -84,3 +86,11 @@ instance hasPureUnrestricted
   => HasPure Function f
   where
   pure _ = Unrestricted.pure
+
+else instance hasPure
+  :: ( ObjectOf c v
+     , Restrict Function c
+     )
+  => HasPure c (c v)
+  where
+  pure _ x = restrict (const x)
