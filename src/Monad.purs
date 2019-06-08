@@ -27,26 +27,6 @@ instance monadUnrestricted
   :: Unrestricted.Monad m
   => Monad Function m
 
-liftM1
-  :: forall c m v0 v1
-   . HasBind c m
-  => Slackable c
-  => HasPure c m
-  => ObjectOf c v0
-  => ObjectOf c v1
-  => ObjectOf c (m v1)
-  => ObjectOf c (c v0 v1)
-  => Restrictable Function c
-  => c v0 v1
-  -> m v0
-  -> m v1
-liftM1 f mx =
-    bindMx $ restrict \x -> pure' c $ slacken f x
-  where
-  bindMx :: c v0 (m v1) -> m v1
-  bindMx = bind mx
-  c = Proxy3 :: Proxy3 c
-
 ap
   :: forall c m v0 v1
    . HasBind c m
@@ -69,6 +49,26 @@ ap mf mx =
   bindF = bind mf
   bindX :: c v0 (m v1) -> m v1
   bindX = bind mx
+  c = Proxy3 :: Proxy3 c
+
+liftM1
+  :: forall c m v0 v1
+   . HasBind c m
+  => Slackable c
+  => HasPure c m
+  => ObjectOf c v0
+  => ObjectOf c v1
+  => ObjectOf c (m v1)
+  => ObjectOf c (c v0 v1)
+  => Restrictable Function c
+  => c v0 v1
+  -> m v0
+  -> m v1
+liftM1 f mx =
+    bindMx $ restrict \x -> pure' c $ slacken f x
+  where
+  bindMx :: c v0 (m v1) -> m v1
+  bindMx = bind mx
   c = Proxy3 :: Proxy3 c
 
 unlessM

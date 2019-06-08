@@ -1,11 +1,7 @@
 module Control.Subcategory.HasBind
   ( class HasBind
-  , class Discard
-  , class Discard_
   , bind                  , (>>=)
   , bindFlipped           , (=<<)
-  , discard
-  , discard'
   , join
   , composeKleisli        , (>=>)
   , composeKleisliFlipped , (<=<)
@@ -50,38 +46,6 @@ instance bindUnrestricted
   => HasBind Function m
   where
   bind = Unrestricted.bind
-
-class Discard_ c f a where
-  discard'
-    :: forall v
-     . HasBind c f
-    => ObjectOf c a
-    => ObjectOf c (f v)
-    => f a
-    -> c a (f v)
-    -> f v
-
-instance discard_Unrestricted
-  :: ( HasBind Function f
-     , Unrestricted.Bind f
-     , Unrestricted.Discard a
-     )
-  => Discard_ Function f a
-  where
-  discard' = Unrestricted.bind
-
-class Discard c a where
-  discard
-    :: forall f v
-     . HasBind c f
-    => ObjectOf c a
-    => ObjectOf c (f v)
-    => f a
-    -> c a (f v)
-    -> f v
-
-instance discardUnit :: HasUnit c u => Discard c u where
-  discard = bind
 
 join
   :: forall c m v
