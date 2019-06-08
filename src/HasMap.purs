@@ -4,7 +4,7 @@ module Control.Subcategory.HasMap
   , mapFlipped , (<#>)
   ) where
 
-import Control.Subcategory.HasEval (class HasEval, eval)
+import Control.Subcategory.Slackable (class Slackable, slacken)
 import Control.Subcategory.Constituency (class ObjectOf, class OperatorOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Data.Functor (class Functor, map) as Unrestricted
@@ -38,7 +38,7 @@ infixl 1 mapFlipped as <#>
 
 flap
   :: forall c f v0 v1
-   . HasEval c
+   . Slackable c
   => HasMap c f
   => ObjectOf c v0
   => ObjectOf c v1
@@ -50,7 +50,7 @@ flap
 flap ff x = map consumeX ff
   where
   consumeX :: c (c v0 v1) v1
-  consumeX = restrict (\f -> eval f x)
+  consumeX = restrict (\f -> slacken f x)
 
 infixl 4 flap as <@>
 
@@ -66,4 +66,4 @@ instance hasMapBuilder
      )
   => HasMap Builder f
   where
-  map builder = Unrestricted.map (eval builder)
+  map builder = Unrestricted.map (slacken builder)

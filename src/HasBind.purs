@@ -15,7 +15,7 @@ module Control.Subcategory.HasBind
 import Prelude (($))
 
 import Control.Bind (class Bind, class Discard, bind) as Unrestricted
-import Control.Subcategory.HasEval (class HasEval, eval)
+import Control.Subcategory.Slackable (class Slackable, slacken)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.HasUnit (class HasUnit)
 import Control.Subcategory.Constituency (class ObjectOf)
@@ -98,7 +98,7 @@ join m = bindM identity
 composeKleisli
   :: forall c m v0 v1 v2
    . HasBind c m
-  => HasEval c
+  => Slackable c
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (m v1)
@@ -108,14 +108,14 @@ composeKleisli
   -> c v1 (m v2)
   -> v0
   -> m v2
-composeKleisli f g a = eval f a >>= g
+composeKleisli f g a = slacken f a >>= g
 
 infixr 1 composeKleisli as >=>
 
 composeKleisliFlipped
   :: forall c m v0 v1 v2
    . HasBind c m
-  => HasEval c
+  => Slackable c
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (m v1)
@@ -125,7 +125,7 @@ composeKleisliFlipped
   -> c v0 (m v1)
   -> v0
   -> m v2
-composeKleisliFlipped f g a = f =<< eval g a
+composeKleisliFlipped f g a = f =<< slacken g a
 
 infixr 1 composeKleisliFlipped as <=<
 

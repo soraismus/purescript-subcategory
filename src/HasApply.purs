@@ -11,7 +11,7 @@ module Control.Subcategory.HasApply
 
 import Control.Apply (class Apply, apply) as Unrestricted
 import Control.Subcategory.HasConst (class HasConst, const)
-import Control.Subcategory.HasEval (class HasEval, eval)
+import Control.Subcategory.Slackable (class Slackable, slacken)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.HasMap (class HasMap, map, (<$>))
 import Control.Subcategory.Constituency (class ObjectOf)
@@ -25,6 +25,21 @@ import Unsafe.Coerce (unsafeCoerce)
 -- class Semimonoidal_ f t0 t1
 --   join_ :: forall v0 v1 => t1 (f v0) (f v1) -> f (t0 v0 v1)
 
+-- | The `HasApply` class provides the `(<*>)` which is used to apply a
+-- | function to an argument under a type constructor.
+-- |
+-- | `HasApply` can be used to lift functions of two or more arguments to work
+-- | on values wrapped with the type constructor `f`. It might also be
+-- | understood in terms of the `lift2` function:
+-- |
+-- | ```purescript
+-- | lift2 :: forall f a b c. HasApply f => (a -> b -> c) -> f a -> f b -> f c
+-- | lift2 f a b = f <$> a <*> b
+-- | ```
+-- |
+-- | `(<*>)` is recovered from `lift2` as `lift2 ($)`. That is, `(<*>)` lifts
+-- | the function application operator `($)` to arguments wrapped with the
+-- | type constructor `f`.
 class HasApply c f where
   apply
     :: forall v0 v1
@@ -36,6 +51,37 @@ class HasApply c f where
     -> f v1
 
 infixl 4 apply as <*>
+
+-- apply'
+--   :: forall c f v0 v1
+--    . HasApply c f
+--   => Slackable c
+--   => ObjectOf c v0
+--   => ObjectOf c v1
+--   => ObjectOf c (c v0 v1)
+--   => Restrictable Function c
+--   => f (c v0 v1)
+--   -> f v0
+--   -> f v1
+-- -- apply' = lift2 (restrict slacken)
+-- -- apply' = lift2 (restrict \v0 -> slacken slacken v0)
+-- apply' ff fx0
+--
+-- slacken' :: c v0 v1 -> v1
+-- slacken' f = slacken f x0
+-- slacken'' :: c (c v0 v1) v1
+-- slacken'' = restrict slacken'
+--
+-- ($) :: forall a b. (a -> b) -> a -> b
+-- eval
+--   => (c v0 v1)
+--   -> v0
+--   -> v1
+-- lift2
+--   => c v0 (c v1 v2)
+--   -> f v0
+--   -> f v1
+--   -> f v2
 
 applyFirst
   :: forall c f v0 v1
@@ -59,7 +105,7 @@ applySecond
   :: forall c f v0 v1
    . HasApply c f
   => HasConst c
-  => HasEval c
+  => Slackable c
   => HasIdentity c
   => HasMap c f
   => ObjectOf c v0
@@ -74,7 +120,7 @@ applySecond x0 x1 =
     apply (map evalConstIdentity x0) x1
   where
   evalConstIdentity :: c v0 (c v1 v1)
-  evalConstIdentity = eval const identity
+  evalConstIdentity = slacken const identity
 
 infixl 4 applySecond as *>
 
@@ -159,7 +205,7 @@ instance applyBuilder
   :: ObjectOf Builder r
   => HasApply Builder (Builder r)
   where
-  apply ff fx = mkBuilder \r -> eval (eval ff r) (eval fx r)
+  apply ff fx = mkBuilder \r -> slacken (slacken ff r) (slacken fx r)
     where
     mkBuilder
       :: forall v0 v1

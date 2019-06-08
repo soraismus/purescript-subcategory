@@ -1,6 +1,6 @@
-module Control.Subcategory.HasEval
-  ( class HasEval
-  , eval
+module Control.Subcategory.Slackable
+  ( class Slackable
+  , slacken
   ) where
 
 import Control.Subcategory.Constituency (class ObjectOf)
@@ -9,8 +9,8 @@ import Record.Builder (Builder)
 import Record.Builder (build) as Builder
 import Unsafe.Coerce (unsafeCoerce)
 
-class HasEval (c :: Type -> Type -> Type) where
-  eval
+class Slackable (c :: Type -> Type -> Type) where
+  slacken
     :: forall v0 v1
      . ObjectOf c v0
     => ObjectOf c v1
@@ -19,11 +19,11 @@ class HasEval (c :: Type -> Type -> Type) where
     -> v0
     -> v1
 
-instance closedMonoidalFn :: HasEval Function where
-  eval = Function.apply
+instance closedMonoidalFn :: Slackable Function where
+  slacken = Function.apply
 
-instance closedMonoidalBuilder :: HasEval Builder where
-  eval builder record = coerceBuild Builder.build builder record
+instance closedMonoidalBuilder :: Slackable Builder where
+  slacken builder record = coerceBuild Builder.build builder record
     where
     coerceBuild
       :: (forall r1 r2

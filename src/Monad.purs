@@ -14,7 +14,7 @@ import Control.Monad (class Monad) as Unrestricted
 import Control.Subcategory.Applicative (class Applicative)
 import Control.Subcategory.Bind (class Bind)
 import Control.Subcategory.HasBind (class HasBind, bind)
-import Control.Subcategory.HasEval (class HasEval, eval)
+import Control.Subcategory.Slackable (class Slackable, slacken)
 import Control.Subcategory.HasPure (class HasPure, pure, unless', when')
 import Control.Subcategory.HasUnit (class HasUnit)
 import Control.Subcategory.Constituency (class ObjectOf)
@@ -30,7 +30,7 @@ instance monadUnrestricted
 liftM1
   :: forall c m v0 v1
    . HasBind c m
-  => HasEval c
+  => Slackable c
   => HasPure c m
   => ObjectOf c v0
   => ObjectOf c v1
@@ -41,7 +41,7 @@ liftM1
   -> m v0
   -> m v1
 liftM1 f mx =
-    bindMx $ restrict \x -> pure c $ eval f x
+    bindMx $ restrict \x -> pure c $ slacken f x
   where
   bindMx :: c v0 (m v1) -> m v1
   bindMx = bind mx
@@ -50,7 +50,7 @@ liftM1 f mx =
 ap
   :: forall c m v0 v1
    . HasBind c m
-  => HasEval c
+  => Slackable c
   => HasPure c m
   => ObjectOf c v0
   => ObjectOf c v1
@@ -63,7 +63,7 @@ ap
 ap mf mx =
   bindF
     $ restrict \f -> bindX
-    $ restrict \x -> pure c $ eval f x
+    $ restrict \x -> pure c $ slacken f x
   where
   bindF :: c (c v0 v1) (m v1) -> m v1
   bindF = bind mf
