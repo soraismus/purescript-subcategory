@@ -18,14 +18,12 @@ import Type.Proxy (Proxy3(Proxy3))
 -- | The class `HasPure` registers for a type `c` and a type constructor `f`
 -- | a distinguished function of type `forall a. a -> f a`.
 class HasPure c f where
-  pure :: forall v. ObjectOf c v => v -> f v
   pure' :: forall v. ObjectOf c v => Proxy3 c -> v -> f v
 
 instance hasPureUnrestricted
   :: Unrestricted.Applicative f
   => HasPure Function f
   where
-  pure = Unrestricted.pure
   pure' _ = Unrestricted.pure
 
 else instance hasPure
@@ -39,6 +37,9 @@ else instance hasPure
 
 inContext :: forall a b c. a -> (a -> b -> c) -> (a -> b) -> c
 inContext context f0 f1 = f0 context (f1 context)
+
+pure :: forall v. ObjectOf c v => v -> f v
+pure = pure' (Proxy3 :: Proxy3 c)
 
 unless
   :: forall c f u

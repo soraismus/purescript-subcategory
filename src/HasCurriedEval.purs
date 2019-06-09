@@ -4,6 +4,7 @@ module Control.Subcategory.HasCurriedEval
   , eval
   ) where
 
+import Control.Category (identity) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
 
 class HasCurriedEval
@@ -21,3 +22,6 @@ eval
   => ObjectOf c (exp v0 v1)
   => c (exp v0 v1) (exp v0 v1)
 eval = curriedEval
+
+instance hasCurriedEvalFn :: HasCurriedEval Function Function where
+  curriedEval = Unrestricted.identity
