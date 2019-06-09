@@ -38,11 +38,10 @@ flap
   => Slackable c
   => f (c v0 v1)
   -> c v0 (f v1)
---flap ff = restrict \x -> slacken (map consume) ff
 flap ff = restrict \x -> slacken (map (slacken consume x)) ff
   where
   consume :: c v0 (c (c v0 v1) v1)
-  consume = restrict \x -> restrict (\f -> slacken f x)
+  consume = restrict \x -> restrict \f -> slacken f x
 
 infixl 4 flap as <@>
 

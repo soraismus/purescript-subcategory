@@ -3,14 +3,8 @@ module Control.Subcategory.Semimonoidal
   , join
   ) where
 
-import Prelude ((<<<))
-
 import Control.Subcategory.Constituency (class ObjectOf)
-import Control.Subcategory.HasUnit (class HasUnit)
-import Data.Function (flip, identity) as Function
-import Data.Tuple (Tuple)
-import Data.Tuple (curry, swap, uncurry) as Tuple
-import Data.Unit (Unit)
+import Data.Function (identity) as Function
 
 class Semimonoidal
   (c         :: Type -> Type -> Type)
