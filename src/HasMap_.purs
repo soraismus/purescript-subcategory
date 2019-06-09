@@ -1,6 +1,7 @@
-module Control.Subcategory.Endofunctor.HasMap
+module Control.Subcategory.Functor.HasMap
   ( class HasMap
-  , map , (<$>)
+  , map        , (<$>)
+  , mapFlipped , (<#>)
   ) where
 
 import Control.Subcategory.Constituency (class ObjectOf)
@@ -16,12 +17,23 @@ class HasMap
     :: forall v0 v1
      . ObjectOf c v0
     => ObjectOf c v1
-    => ObjectOf c (f v0)
-    => ObjectOf c (f v1)
     => c v0 v1
-    -> c (f v0) (f v1)
+    -> f v0
+    -> f v1
 
 infixl 4 map as <$>
+
+mapFlipped
+  :: forall c f v0 v1
+   . HasMap c f
+  => ObjectOf c v0
+  => ObjectOf c v1
+  => f v0
+  -> c v0 v1
+  -> f v1
+mapFlipped fa f = f <$> fa
+
+infixl 1 mapFlipped as <#>
 
 flap
   :: forall c f v0 v1
@@ -29,20 +41,15 @@ flap
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c (c v0 v1)
-  => ObjectOf c (c (c v0 v1) v1)
-  => ObjectOf c (f v1)
-  => ObjectOf c (f (c v0 v1))
-  => ObjectOf c (c (f (c v0 v1)) (f v1))
-  => ObjectOf c (c v0 (c (c v0 v1) v1))
   => Restrictable Function c
   => Slackable c
   => f (c v0 v1)
-  -> c v0 (f v1)
---flap ff = restrict \x -> slacken (map consume) ff
-flap ff = restrict \x -> slacken (map (slacken consume x)) ff
+  -> v0
+  -> f v1
+flap ff x = map consumeX ff
   where
-  consume :: c v0 (c (c v0 v1) v1)
-  consume = restrict \x -> restrict (\f -> slacken f x)
+  consumeX :: c (c v0 v1) v1
+  consumeX = restrict (\f -> slacken f x)
 
 infixl 4 flap as <@>
 

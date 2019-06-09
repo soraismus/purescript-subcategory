@@ -13,7 +13,7 @@ import Control.Apply (class Apply, apply) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasConst (class HasConst, const)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
-import Control.Subcategory.HasMap (class HasMap, map, (<$>))
+import Control.Subcategory.Functor.HasMap (class HasMap, map, (<$>))
 import Control.Subcategory.Slackable (class Slackable, slacken)
 
 -- class Strength f t where
@@ -47,6 +47,32 @@ class HasApply c f where
     => f (c v0 v1)
     -> f v0
     -> f v1
+
+--
+-- if c := (->)
+--
+--    f (c0 v0 v1)            -> c1 (f v0) (f v1)
+--    |
+--    | uncurry c1
+--    v
+-- t1 (f (c0 v0 v1)) (f v0)   ->           f v1
+--    |
+--    | semimonoidal f
+--    v
+-- f (t1 (c0 v0 v1) v0)       ->           f v1
+--    |
+--    | map eval 1/0?     [map (slacken eval) -- slacken isn't necessary]
+--    v
+-- f (v1)                    ->           f v1
+--
+--
+-- HasApply maps from category c to category (->)
+--   so currying and uncurrying are possible
+--
+--         eval :: forall v0 v1.   c (t (c v0 v1) v0)      v1
+-- slacken eval :: forall v0 v1.      t (c v0 v1) v0  ->   v1
+-- map     eval :: forall f v0 v1. f (t (c v0 v1) v0) -> f v1
+
 
 infixl 4 apply as <*>
 
@@ -198,3 +224,19 @@ lift5 f x0 x1 x2 x3 x4 = f <$> x0 <*> x1 <*> x2 <*> x3 <*> x4
 
 instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
   apply = Unrestricted.apply
+
+
+
+
+
+-- mapFlipped
+--   :: forall c f v0 v1
+--    . HasMap c f
+--   => ObjectOf c v0
+--   => ObjectOf c v1
+--   => f v0
+--   -> c v0 v1
+--   -> f v1
+-- mapFlipped fa f = f <$> fa
+--
+-- infixl 1 mapFlipped as <#>

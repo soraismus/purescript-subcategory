@@ -3,7 +3,7 @@ module Control.Subcategory.Functor
   ) where
 
 import Control.Subcategory.Category (class Category)
-import Control.Subcategory.HasMap (class HasMap)
+import Control.Subcategory.Functor.HasMap (class HasMap)
 import Record.Builder (Builder)
 
 class (Category c, HasMap c f) <= Functor c f
