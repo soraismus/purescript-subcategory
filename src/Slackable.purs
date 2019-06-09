@@ -14,7 +14,6 @@ class Slackable (c :: Type -> Type -> Type) where
     :: forall v0 v1
      . ObjectOf c v0
     => ObjectOf c v1
-    => ObjectOf c (c v0 v1)
     => (c v0 v1)
     -> v0
     -> v1

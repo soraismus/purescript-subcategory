@@ -7,7 +7,7 @@ import Control.Applicative (class Applicative) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Endofunctor.Apply (class Apply)
 import Control.Subcategory.Endofunctor.HasApply (class HasApply, apply)
-import Control.Subcategory.HasPure (class HasPure, pure')
+import Control.Subcategory.Endofunctor.HasPure (class HasPure, pure')
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Control.Subcategory.Slackable (class Slackable, slacken)
 import Type.Proxy (Proxy3(Proxy3))

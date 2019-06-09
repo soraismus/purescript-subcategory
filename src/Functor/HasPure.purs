@@ -1,4 +1,4 @@
-module Control.Subcategory.HasPure
+module Control.Subcategory.Functor.HasPure
   ( class HasPure
   , pure
   , pure'

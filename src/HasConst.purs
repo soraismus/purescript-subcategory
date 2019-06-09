@@ -4,7 +4,7 @@ module Control.Subcategory.HasConst
   ) where
 
 import Control.Subcategory.Constituency (class ObjectOf)
-import Control.Subcategory.HasPure (class HasPure, pure')
+import Control.Subcategory.Functor.HasPure (class HasPure, pure')
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Type.Proxy (Proxy3(Proxy3))
 

@@ -14,3 +14,14 @@ instance hasIdentityFn :: HasIdentity Function where
 
 instance hasIdentityBuilder :: HasIdentity Builder where
   identity = Unrestricted.identity
+
+-- instance hasIdentityCategory
+--   :: Category c
+--   => HasIdentity c
+--   where
+--   identity = Unrestricted.identity
+-- else instance hasIdentityRestrictable
+--   :: Restrictable Function c
+--   => HasIdentity c
+--   where
+--   identity = restrict Unrestricted.identity
