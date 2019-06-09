@@ -1,4 +1,4 @@
-module Control.Subcategory.Functor.Discard
+module Control.Subcategory.Endofunctor.Discard
   ( class Discard
   , class Discard_
   , discard

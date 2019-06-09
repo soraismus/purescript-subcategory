@@ -1,4 +1,4 @@
-module Control.Subcategory.HasApply
+module Control.Subcategory.Endofunctor.HasApply
   ( class HasApply
   , apply
   , applyFirst

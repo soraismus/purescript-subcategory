@@ -1,4 +1,4 @@
-module Control.Subcategory.HasBind
+module Control.Subcategory.Endofunctor.HasBind
   ( class HasBind
   , bind                  , (>>=)
   , bind'                 , (>>>=)
