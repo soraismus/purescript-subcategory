@@ -1,4 +1,4 @@
-module Control.Subcategory.Monad
+module Control.Subcategory.Endofunctor.Monad
   ( class Monad
   , ap
   , liftM1
@@ -11,10 +11,10 @@ module Control.Subcategory.Monad
 import Prelude (($))
 
 import Control.Monad (class Monad) as Unrestricted
-import Control.Subcategory.Applicative (class Applicative)
-import Control.Subcategory.Bind (class Bind)
+import Control.Subcategory.Endofunctor.Applicative (class Applicative)
+import Control.Subcategory.Endofunctor.Bind (class Bind)
+import Control.Subcategory.Endofunctor.HasBind (class HasBind, bind)
 import Control.Subcategory.Constituency (class ObjectOf)
-import Control.Subcategory.HasBind (class HasBind, bind)
 import Control.Subcategory.HasPure (class HasPure, pure', unless', when')
 import Control.Subcategory.HasUnit (class HasUnit)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
@@ -23,9 +23,7 @@ import Type.Proxy (Proxy3(Proxy3))
 
 class (Applicative c m, Bind c m) <= Monad c m
 
-instance monadUnrestricted
-  :: Unrestricted.Monad m
-  => Monad Function m
+instance monadUnrestricted :: Unrestricted.Monad m => Monad Function m
 
 ap
   :: forall c m v0 v1

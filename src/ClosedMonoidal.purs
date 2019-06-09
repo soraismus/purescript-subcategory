@@ -13,5 +13,4 @@ class
   )
   <= ClosedMonoidal c tensor u0 u1
 
-instance closedMonoidalFunction
-  :: ClosedMonoidal Function Tuple Unit Unit
+instance closedMonoidalFunction :: ClosedMonoidal Function Tuple Unit Unit

@@ -10,7 +10,7 @@ import Data.Tuple (Tuple)
 import Data.Tuple (swap, uncurry) as Tuple
 
 class HasUncurry
-  (c       :: Type -> Type -> Type)
+  (c      :: Type -> Type -> Type)
   (tensor :: Type -> Type -> Type)
   (exp    :: Type -> Type -> Type)
   where

@@ -7,7 +7,7 @@ module Control.Subcategory.Endofunctor.Discard
 
 import Control.Bind (class Bind, class Discard, bind) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
-import Control.Subcategory.Functor.HasBind (class HasBind, bind)
+import Control.Subcategory.Endofunctor.HasBind (class HasBind, bind)
 import Control.Subcategory.HasUnit (class HasUnit)
 
 class Discard_ c f a where

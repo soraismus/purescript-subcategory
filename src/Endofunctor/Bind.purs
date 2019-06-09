@@ -1,10 +1,10 @@
-module Control.Subcategory.Bind
+module Control.Subcategory.Endofunctor.Bind
   ( class Bind
   ) where
 
 import Control.Bind (class Bind) as Unrestricted
-import Control.Subcategory.Apply (class Apply)
-import Control.Subcategory.HasBind (class HasBind)
+import Control.Subcategory.Endofunctor.Apply (class Apply)
+import Control.Subcategory.Endofunctor.HasBind (class HasBind)
 
 class (Apply c f, HasBind c f) <= Bind c f
 

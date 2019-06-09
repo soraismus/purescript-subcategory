@@ -15,8 +15,6 @@ import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Data.Function (const) as Function
 import Type.Proxy (Proxy3(Proxy3))
 
--- | The class `HasPure` registers for a type `c` and a type constructor `f`
--- | a distinguished function of type `forall a. a -> f a`.
 class HasPure c f where
   pure' :: forall v. ObjectOf c v => Proxy3 c -> v -> f v
 

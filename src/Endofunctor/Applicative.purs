@@ -1,12 +1,12 @@
-module Control.Subcategory.Applicative
+module Control.Subcategory.Endofunctor.Applicative
   ( class Applicative
   , liftA1
   ) where
 
 import Control.Applicative (class Applicative) as Unrestricted
-import Control.Subcategory.Apply (class Apply)
 import Control.Subcategory.Constituency (class ObjectOf)
-import Control.Subcategory.HasApply (class HasApply, apply)
+import Control.Subcategory.Endofunctor.Apply (class Apply)
+import Control.Subcategory.Endofunctor.HasApply (class HasApply, apply)
 import Control.Subcategory.HasPure (class HasPure, pure')
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Control.Subcategory.Slackable (class Slackable, slacken)
