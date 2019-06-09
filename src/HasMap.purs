@@ -1,6 +1,6 @@
 module Control.Subcategory.Endofunctor.HasMap
   ( class HasMap
-  , map , (<$>)
+  , map
   ) where
 
 import Control.Subcategory.Constituency (class ObjectOf)
@@ -20,8 +20,6 @@ class HasMap
     => ObjectOf c (f v1)
     => c v0 v1
     -> c (f v0) (f v1)
-
-infixl 4 map as <$>
 
 flap
   :: forall c f v0 v1
