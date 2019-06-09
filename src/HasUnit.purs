@@ -19,7 +19,7 @@ class
       where
       unit' :: ObjectOf c u => Proxy3 c -> u
 
-unit :: ObjectOf c u => u
+unit :: forall c u. HasUnit c u => ObjectOf c u => u
 unit = unit' (Proxy3 :: Proxy3 c)
 
 instance hasUnitFn :: HasUnit Function Unit where

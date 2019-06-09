@@ -30,13 +30,12 @@ else instance hasPure
      )
   => HasPure c (c v)
   where
-  pure x = restrict (Function.const x)
   pure' _ x = restrict (Function.const x)
 
 inContext :: forall a b c. a -> (a -> b -> c) -> (a -> b) -> c
 inContext context f0 f1 = f0 context (f1 context)
 
-pure :: forall v. ObjectOf c v => v -> f v
+pure :: forall c f v. HasPure c f => ObjectOf c v => v -> f v
 pure = pure' (Proxy3 :: Proxy3 c)
 
 unless

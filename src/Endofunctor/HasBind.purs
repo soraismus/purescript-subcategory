@@ -11,7 +11,7 @@ module Control.Subcategory.Endofunctor.HasBind
 
 import Prelude (($))
 
-import Control.Bind (class Bind, bindFlipped) as Unrestricted
+import Control.Bind (class Bind, bind) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
@@ -60,7 +60,7 @@ instance bindUnrestricted
   :: Unrestricted.Bind m
   => HasBind Function m
   where
-  bindFlipped = Unrestricted.bindFlipped
+  bind = Unrestricted.bind
 
 join
   :: forall c m v

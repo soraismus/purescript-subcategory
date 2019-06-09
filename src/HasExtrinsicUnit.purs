@@ -21,8 +21,14 @@ class
       where
       extrinsicUnit' :: ObjectOf c u1 => Proxy3 c -> u0 -> u1
 
-extrinsicUnit :: ObjectOf c u1 => u0 -> u1
+extrinsicUnit
+  :: forall c u0 u1
+   . HasExtrinsicUnit c u0 u1
+  => HasUnit c u1
+  => ObjectOf c u1
+  => u0
+  -> u1
 extrinsicUnit = extrinsicUnit' (Proxy3 :: Proxy3 c)
 
 instance hasExtrinsicUnitFunction :: HasExtrinsicUnit Function Unit Unit where
-  extrinsicUnit = Function.identity
+  extrinsicUnit' _ = Function.identity
