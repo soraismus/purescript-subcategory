@@ -11,8 +11,8 @@ module Control.Subcategory.Functor.HasApply
 
 import Control.Apply (class Apply, apply) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
+import Control.Subcategory.Functor.HasConst (class HasConst, const)
 import Control.Subcategory.Functor.HasMap (class HasMap, map, (<$>))
-import Control.Subcategory.HasConst (class HasConst, const)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.Slackable (class Slackable, slacken)
 

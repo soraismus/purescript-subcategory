@@ -1,4 +1,4 @@
-module Control.Subcategory.HasConst
+module Control.Subcategory.Functor.HasConst
   ( class HasConst
   , const
   ) where

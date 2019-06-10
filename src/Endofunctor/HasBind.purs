@@ -7,15 +7,14 @@ module Control.Subcategory.Endofunctor.HasBind
 --   , join
   ) where
 
-import Prelude (($))
+-- import Prelude (($))
 
 import Control.Bind (class Bind, bindFlipped) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Endofunctor.HasPure (class HasPure, pure')
-import Control.Subcategory.HasIdentity (class HasIdentity, identity)
-import Control.Subcategory.Restrictable (class Restrictable, restrict)
-import Control.Subcategory.Slackable (class Slackable, slacken)
-import Data.Function (flip)
+-- import Control.Subcategory.Restrictable (class Restrictable, restrict)
+-- import Control.Subcategory.Slackable (class Slackable, slacken)
+-- import Data.Function (flip)
 import Type.Proxy (Proxy3(Proxy3))
 
 class HasBind c m where
@@ -53,7 +52,6 @@ instance bindUnrestricted
 join
   :: forall c m v
    . HasBind c m
-  => HasIdentity c
   => HasPure c m
   => ObjectOf c v
   => ObjectOf c (m v)
@@ -67,14 +65,6 @@ join = result
         x1 = bindFlipped x0
         result :: c (m (m v)) (m v)
         result = bindFlipped x1
-
--- bindFlipped :: c v0 (m v1) -> c (m v0) (m v1)
--- bindFlipped :: c (m (m v)) (m v) -> c (m (m (m v))) (m v)
-
-
-
-
-
 
 -- composeKleisli
 --   :: forall c m v0 v1 v2

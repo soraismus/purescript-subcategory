@@ -11,27 +11,12 @@ module Control.Subcategory.Endofunctor.HasApply
 
 import Control.Apply (class Apply, apply) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
+import Control.Subcategory.Endofunctor.HasConst (class HasConst, const)
 import Control.Subcategory.Endofunctor.HasMap (class HasMap, map)
-import Control.Subcategory.HasConst (class HasConst, const)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Control.Subcategory.Slackable (class Slackable, slacken)
 
--- | The `HasApply` class provides the `(<*>)` which is used to apply a
--- | function to an argument under a type constructor.
--- |
--- | `HasApply` can be used to lift functions of two or more arguments to work
--- | on values wrapped with the type constructor `f`. It might also be
--- | understood in terms of the `lift2` function:
--- |
--- | ```purescript
--- | lift2 :: forall f a b c. HasApply f => (a -> b -> c) -> f a -> f b -> f c
--- | lift2 f a b = f <$> a <*> b
--- | ```
--- |
--- | `(<*>)` is recovered from `lift2` as `lift2 ($)`. That is, `(<*>)` lifts
--- | the function application operator `($)` to arguments wrapped with the
--- | type constructor `f`.
 class HasApply c f where
   apply
     :: forall v0 v1
@@ -72,9 +57,43 @@ applyFirst
   -- -----------------
   => Restrictable Function c
   => Slackable c
+  => c (f v0) (c (f v1) (f v0))
+applyFirst = apply (map const)
+
+applyFirst'
+  :: forall c f v0 v1
+   . HasApply c f
+  => HasConst c
+  => HasMap c f
+  -- -------
+  -- constX0
+  -- -------
+  => ObjectOf c v0                       -- #0
+  => ObjectOf c v1                       -- #1
+  => ObjectOf c (c v1 v0)                -- #2
+  => ObjectOf c (c v0 (c v1 v0))         -- #3
+  -- -------
+  -- APPLY f
+  -- -------
+  => ObjectOf c (f (c v1 v0))            -- #4. #2
+  => ObjectOf c (f (c v0 (c v1 v0)))     -- #5. #3
+  -- ------
+  -- OUTPUT
+  -- ------
+  => ObjectOf c (f v0)                   -- #6
+  => ObjectOf c (f v1)                   -- #7
+  => ObjectOf c (c (f v1) (f v0))        -- #8
+  -- -------------
+  -- INVERSE apply
+  -- -------------
+  => ObjectOf c (c (f v1) (f v0))        -- #9.  #4
+  => ObjectOf c (c (f v0) (f (c v1 v0))) -- #10. #5
+  -- -----------------
+  => Restrictable Function c
+  => Slackable c
   => f v0
   -> c (f v1) (f v0)
-applyFirst fx0 =
+applyFirst' fx0 =
     restrict \fx1 -> slacken (apply constX0) fx1
   where
   constX0 :: f (c v1 v0)
