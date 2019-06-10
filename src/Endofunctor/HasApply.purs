@@ -69,6 +69,35 @@ applyFirst = apply (map const)
 --     => f (c v0 v1)
 --     -> c (f v0) (f v1)
 
+-- c v0 v1 ---> c v0 (g v1)
+-- f    v1 ---> f    (g v1)
+--
+--
+-- (v1 -> g v1) -> (f v1 -> f (g v1))
+-- (v1 ->   v1) -> (f v1 -> f    v1 )
+-- (v1 ->   v1) -> (f v1 -> f (g v1))
+--
+--
+-- compose   ::    s v1 v2   ->    s v0 v1 -> s v0 v2
+-- compose'  ::    s v1 v2   -> s (s v0 v1)  (s v0 v2)
+-- compose'' :: s (s v1 v2) (s    (s v0 v1)  (s v0 v2))
+--
+--
+-- compose    :: (  v1 ->   v2) -> (v0 -> v1) -> (v0 -> v2)
+-- map_v1v2   :: (  v1 ->   v2) ->      f v1  ->      f v2
+-- map_fv1fv2 :: (f v1 -> f v2) ->   g (f v1) ->   g (f v2)
+--
+-- compose map_fv1fv2 map_v1v2
+--   :: ((f v1 -> f v2) ->   (g (f v1) ->   g (f v2)))
+--   -> ((  v1 ->   v2) ->   (   f v1  ->      f v2) )
+--   -> ((  v1 ->   v2) ->   (g (f v1) ->   g (f v2)))
+
+
+
+
+
+
+
 applyFirst'
   :: forall c f v0 v1
    . HasApply c f

@@ -3,6 +3,7 @@ module Control.Subcategory.Endofunctor.HasMap
   , map
   ) where
 
+import Control.Subcategory.Semigroupoid (class Semigroupoid, (>>>))
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Control.Subcategory.Slackable (class Slackable, slacken)
@@ -48,3 +49,13 @@ instance hasMapUnrestricted
   => HasMap Function f
   where
   map = Unrestricted.map
+else instance hasMapFixedSourceArrow
+  :: ( ObjectOf c v
+     , ObjectOf c v'
+     , ObjectOf c (c v v')
+     , Restrictable Function c
+     , Semigroupoid c
+     )
+  => HasMap c (c v)
+  where
+  map f' = restrict \f -> f >>> f'

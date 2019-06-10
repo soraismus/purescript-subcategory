@@ -13,5 +13,5 @@ class OperatorOf (p :: Type -> Type -> Type) (a :: Type -> Type)
 instance objectOfFn :: ObjectOf Function a
 instance operatorOfFn :: OperatorOf Function a
 
-instance objectOfBuilderRecord :: ObjectOf Builder (Record r)
 instance objectOfBuilderVoid :: ObjectOf Builder Void
+instance objectOfBuilderRecord :: ObjectOf Builder (Record r)

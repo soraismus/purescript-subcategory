@@ -13,7 +13,7 @@ class
     <= HasPoint
       (c :: Type -> Type -> Type)
       (u :: Type)
-      | c -> u
+      | c -> u  -- This fundep is to accommodate the category `Builder`.
       where
       point :: forall v. ObjectOf c v => v -> c u v
 
