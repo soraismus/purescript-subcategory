@@ -13,11 +13,11 @@ import Control.Subcategory.Category (class Category)
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.HasTerminate (class HasTerminate, terminate)
-import Control.Subcategory.Semigroupoid ((>>>))
+import Control.Subcategory.HasCompose ((>>>))
 import Data.Newtype (class Newtype, wrap, unwrap)
 import Data.Profunctor (class Profunctor, dimap) as Unrestricted
 
-class Category c <= HasDimap
+class HasDimap
   (c :: Type -> Type -> Type)
   (p :: Type -> Type -> Type)
   where
@@ -35,6 +35,7 @@ class Category c <= HasDimap
 arr
   :: forall c p v0 v1
    . HasDimap c p
+  => HasIdentity c
   => HasIdentity p
   => ObjectOf c v0
   => ObjectOf c v1
@@ -45,6 +46,7 @@ arr f = rmap f identity
 lcmap
   :: forall c p v0 v1 v2
    . HasDimap c p
+  => HasIdentity c
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c v2
@@ -56,6 +58,7 @@ lcmap f = dimap f identity
 rmap
   :: forall c p v0 v1 v2
    . HasDimap c p
+  => HasIdentity c
   => ObjectOf c v0
   => ObjectOf c v1
   => ObjectOf c v2
@@ -67,6 +70,7 @@ rmap f = dimap identity f
 throughUnit
   :: forall c u v0 v1
    . HasDimap c c
+  => HasIdentity c
   => HasTerminate c u
   => ObjectOf c v0
   => ObjectOf c v1
