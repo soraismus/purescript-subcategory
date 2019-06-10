@@ -16,6 +16,7 @@ import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Control.Subcategory.Slackable (class Slackable, slacken)
 import Data.Function (flip)
+import Type.Proxy (Proxy3(Proxy3))
 
 class HasBind c m where
   bindFlipped
@@ -54,19 +55,26 @@ join
    . HasBind c m
   => HasIdentity c
   => HasPure c m
+  => ObjectOf c v
   => ObjectOf c (m v)
   => ObjectOf c (m (m v))
   => c (m (m v)) (m v)
-join m = bindM identity
+join = result
   where
-  bindM :: c (m v) (m v) -> m v
-  bindM = bind m
-
--- pure' (Proxy3 :: Proxy3 c) v :: m v
--- pure' (Proxy3 :: Proxy3 c) :: c v (m v)
+        x0 :: c v (m v)
+        x0 = pure' (Proxy3 :: Proxy3 c)
+        x1 :: c (m v) (m v)
+        x1 = bindFlipped x0
+        result :: c (m (m v)) (m v)
+        result = bindFlipped x1
 
 -- bindFlipped :: c v0 (m v1) -> c (m v0) (m v1)
 -- bindFlipped :: c (m (m v)) (m v) -> c (m (m (m v))) (m v)
+
+
+
+
+
 
 -- composeKleisli
 --   :: forall c m v0 v1 v2
