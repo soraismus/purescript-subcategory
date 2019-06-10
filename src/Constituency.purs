@@ -3,6 +3,7 @@ module Control.Subcategory.Constituency
   , class OperatorOf
   ) where
 
+import Data.Void (Void)
 import Record.Builder (Builder)
 
 class ObjectOf (p :: Type -> Type -> Type) (a :: Type)
@@ -13,3 +14,4 @@ instance objectOfFn :: ObjectOf Function a
 instance operatorOfFn :: OperatorOf Function a
 
 instance objectOfBuilderRecord :: ObjectOf Builder (Record r)
+instance objectOfBuilderVoid :: ObjectOf Builder Void

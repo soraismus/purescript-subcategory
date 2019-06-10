@@ -1,9 +1,10 @@
-module Control.Subcategory.HasDimap
+module Control.Subcategory.Profunctor.HasDimap
   ( class HasDimap
   , arr
   , dimap
   , lcmap
   , rmap
+  , throughUnit
   , unwrapIso
   , wrapIso
   ) where
@@ -11,6 +12,7 @@ module Control.Subcategory.HasDimap
 import Control.Subcategory.Category (class Category)
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
+import Control.Subcategory.HasTerminate (class HasTerminate, terminate)
 import Control.Subcategory.Semigroupoid ((>>>))
 import Data.Newtype (class Newtype, wrap, unwrap)
 import Data.Profunctor (class Profunctor, dimap) as Unrestricted
@@ -61,6 +63,16 @@ rmap
   -> p v0 v1
   -> p v0 v2
 rmap f = dimap identity f
+
+throughUnit
+  :: forall c u v0 v1
+   . HasDimap c c
+  => HasTerminate c u
+  => ObjectOf c v0
+  => ObjectOf c v1
+  => c u v1
+  -> c v0 v1
+throughUnit f = lcmap (terminate :: c v0 u) f
 
 unwrapIso
   :: forall p v0 v1

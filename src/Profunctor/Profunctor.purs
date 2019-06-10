@@ -3,7 +3,7 @@ module Control.Subcategory.Profunctor
   ) where
 
 import Control.Subcategory.Category (class Category)
-import Control.Subcategory.HasDimap (class HasDimap)
+import Control.Subcategory.Profunctor.HasDimap (class HasDimap)
 import Record.Builder (Builder)
 
 class (Category c, HasDimap c p) <= Profunctor c p
