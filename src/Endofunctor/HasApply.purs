@@ -26,48 +26,48 @@ class HasApply c f where
     => f (c v0 v1)
     -> c (f v0) (f v1)
 
-applyFirst
-  :: forall c f v0 v1
-   . HasApply c f
-  => HasConst c
-  => HasMap c f
-  -- -------
-  -- constX0
-  -- -------
-  => ObjectOf c v0                       -- #0
-  => ObjectOf c v1                       -- #1
-  => ObjectOf c (c v1 v0)                -- #2
-  => ObjectOf c (c v0 (c v1 v0))         -- #3
-  -- -------
-  -- APPLY f
-  -- -------
-  => ObjectOf c (f (c v1 v0))            -- #4. #2
-  => ObjectOf c (f (c v0 (c v1 v0)))     -- #5. #3
-  -- ------
-  -- OUTPUT
-  -- ------
-  => ObjectOf c (f v0)                   -- #6
-  => ObjectOf c (f v1)                   -- #7
-  => ObjectOf c (c (f v1) (f v0))        -- #8
-  -- -------------
-  -- INVERSE apply
-  -- -------------
-  => ObjectOf c (c (f v1) (f v0))        -- #9.  #4
-  => ObjectOf c (c (f v0) (f (c v1 v0))) -- #10. #5
-  -- -----------------
-  => Restrictable Function c
-  => Slackable c
-  => c (f v0) (c (f v1) (f v0))
-applyFirst = apply (map const)
-  where
-  const' :: c v0 (c v1 v0)
-  const' = const
-  mapConst :: c (f v0) (f (c v1 v0))
-  mapConst = map const'
-  applyMapConst :: f (c v0 (c v1 v0))
-  applyMapConst = apply mapConst
---     => f (c v0 v1)
---     -> c (f v0) (f v1)
+-- applyFirst'
+--   :: forall c f v0 v1
+--    . HasApply c f
+--   => HasConst c
+--   => HasMap c f
+--   -- -------
+--   -- constX0
+--   -- -------
+--   => ObjectOf c v0                       -- #0
+--   => ObjectOf c v1                       -- #1
+--   => ObjectOf c (c v1 v0)                -- #2
+--   => ObjectOf c (c v0 (c v1 v0))         -- #3
+--   -- -------
+--   -- APPLY f
+--   -- -------
+--   => ObjectOf c (f (c v1 v0))            -- #4. #2
+--   => ObjectOf c (f (c v0 (c v1 v0)))     -- #5. #3
+--   -- ------
+--   -- OUTPUT
+--   -- ------
+--   => ObjectOf c (f v0)                   -- #6
+--   => ObjectOf c (f v1)                   -- #7
+--   => ObjectOf c (c (f v1) (f v0))        -- #8
+--   -- -------------
+--   -- INVERSE apply
+--   -- -------------
+--   => ObjectOf c (c (f v1) (f v0))        -- #9.  #4
+--   => ObjectOf c (c (f v0) (f (c v1 v0))) -- #10. #5
+--   -- -----------------
+--   => Restrictable Function c
+--   => Slackable c
+--   => c (f v0) (c (f v1) (f v0))
+-- applyFirst' = apply (map const)
+--   where
+--   const' :: c v0 (c v1 v0)
+--   const' = const
+--   mapConst :: c (f v0) (f (c v1 v0))
+--   mapConst = map const'
+--   applyMapConst :: f (c v0 (c v1 v0))
+--   applyMapConst = apply mapConst
+-- --     => f (c v0 v1)
+-- --     -> c (f v0) (f v1)
 
 -- c v0 v1 ---> c v0 (g v1)
 -- f    v1 ---> f    (g v1)
@@ -98,7 +98,7 @@ applyFirst = apply (map const)
 
 
 
-applyFirst'
+applyFirst
   :: forall c f v0 v1
    . HasApply c f
   => HasConst c
@@ -131,7 +131,7 @@ applyFirst'
   => Slackable c
   => f v0
   -> c (f v1) (f v0)
-applyFirst' fx0 =
+applyFirst fx0 =
     restrict \fx1 -> slacken (apply constX0) fx1
   where
   constX0 :: f (c v1 v0)
