@@ -14,8 +14,10 @@ import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 import Control.Subcategory.HasTerminate (class HasTerminate, terminate)
 import Control.Subcategory.HasCompose ((>>>))
+import Control.Subcategory.Relation.Reflexive (class Reflexive, reflect')
 import Data.Newtype (class Newtype, wrap, unwrap)
 import Data.Profunctor (class Profunctor, dimap) as Unrestricted
+import Type.Proxy (Proxy3(Proxy3))
 
 class HasDimap
   (c :: Type -> Type -> Type)
@@ -36,12 +38,12 @@ arr
   :: forall c p v0 v1
    . HasDimap c p
   => HasIdentity c
-  => HasIdentity p
+  => Reflexive c p
   => ObjectOf c v0
   => ObjectOf c v1
   => c v0 v1
   -> p v0 v1
-arr f = rmap f identity
+arr f = rmap f (reflect' (Proxy3 :: Proxy3 c))
 
 lcmap
   :: forall c p v0 v1 v2
