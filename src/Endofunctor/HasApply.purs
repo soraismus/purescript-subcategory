@@ -26,107 +26,22 @@ class HasApply c f where
     => f (c v0 v1)
     -> c (f v0) (f v1)
 
--- applyFirst'
---   :: forall c f v0 v1
---    . HasApply c f
---   => HasConst c
---   => HasMap c f
---   -- -------
---   -- constX0
---   -- -------
---   => ObjectOf c v0                       -- #0
---   => ObjectOf c v1                       -- #1
---   => ObjectOf c (c v1 v0)                -- #2
---   => ObjectOf c (c v0 (c v1 v0))         -- #3
---   -- -------
---   -- APPLY f
---   -- -------
---   => ObjectOf c (f (c v1 v0))            -- #4. #2
---   => ObjectOf c (f (c v0 (c v1 v0)))     -- #5. #3
---   -- ------
---   -- OUTPUT
---   -- ------
---   => ObjectOf c (f v0)                   -- #6
---   => ObjectOf c (f v1)                   -- #7
---   => ObjectOf c (c (f v1) (f v0))        -- #8
---   -- -------------
---   -- INVERSE apply
---   -- -------------
---   => ObjectOf c (c (f v1) (f v0))        -- #9.  #4
---   => ObjectOf c (c (f v0) (f (c v1 v0))) -- #10. #5
---   -- -----------------
---   => Restrictable Function c
---   => Slackable c
---   => c (f v0) (c (f v1) (f v0))
--- applyFirst' = apply (map const)
---   where
---   const' :: c v0 (c v1 v0)
---   const' = const
---   mapConst :: c (f v0) (f (c v1 v0))
---   mapConst = map const'
---   applyMapConst :: f (c v0 (c v1 v0))
---   applyMapConst = apply mapConst
--- --     => f (c v0 v1)
--- --     -> c (f v0) (f v1)
-
--- c v0 v1 ---> c v0 (g v1)
--- f    v1 ---> f    (g v1)
---
---
--- (v1 -> g v1) -> (f v1 -> f (g v1))
--- (v1 ->   v1) -> (f v1 -> f    v1 )
--- (v1 ->   v1) -> (f v1 -> f (g v1))
---
---
--- compose   ::    s v1 v2   ->    s v0 v1 -> s v0 v2
--- compose'  ::    s v1 v2   -> s (s v0 v1)  (s v0 v2)
--- compose'' :: s (s v1 v2) (s    (s v0 v1)  (s v0 v2))
---
---
--- compose    :: (  v1 ->   v2) -> (v0 -> v1) -> (v0 -> v2)
--- map_v1v2   :: (  v1 ->   v2) ->      f v1  ->      f v2
--- map_fv1fv2 :: (f v1 -> f v2) ->   g (f v1) ->   g (f v2)
---
--- compose map_fv1fv2 map_v1v2
---   :: ((f v1 -> f v2) ->   (g (f v1) ->   g (f v2)))
---   -> ((  v1 ->   v2) ->   (   f v1  ->      f v2) )
---   -> ((  v1 ->   v2) ->   (g (f v1) ->   g (f v2)))
-
-
-
-
-
-
-
 applyFirst
   :: forall c f v0 v1
    . HasApply c f
   => HasConst c
   => HasMap c f
-  -- -------
-  -- constX0
-  -- -------
-  => ObjectOf c v0                       -- #0
-  => ObjectOf c v1                       -- #1
-  => ObjectOf c (c v1 v0)                -- #2
-  => ObjectOf c (c v0 (c v1 v0))         -- #3
-  -- -------
-  -- APPLY f
-  -- -------
-  => ObjectOf c (f (c v1 v0))            -- #4. #2
-  => ObjectOf c (f (c v0 (c v1 v0)))     -- #5. #3
-  -- ------
-  -- OUTPUT
-  -- ------
-  => ObjectOf c (f v0)                   -- #6
-  => ObjectOf c (f v1)                   -- #7
-  => ObjectOf c (c (f v1) (f v0))        -- #8
-  -- -------------
-  -- INVERSE apply
-  -- -------------
-  => ObjectOf c (c (f v1) (f v0))        -- #9.  #4
-  => ObjectOf c (c (f v0) (f (c v1 v0))) -- #10. #5
-  -- -----------------
+  => ObjectOf c v0
+  => ObjectOf c v1
+  => ObjectOf c (f v0)
+  => ObjectOf c (f v1)
+  => ObjectOf c (c v1 v0)
+  => ObjectOf c (f (c v1 v0))
+  => ObjectOf c (c v0 (c v1 v0))
+  => ObjectOf c (c (f v1) (f v0))
+  => ObjectOf c (c (f v1) (f v0))
+  => ObjectOf c (f (c v0 (c v1 v0)))
+  => ObjectOf c (c (f v0) (f (c v1 v0)))
   => Restrictable Function c
   => Slackable c
   => f v0
@@ -143,33 +58,17 @@ applySecond
   => HasConst c
   => HasIdentity c
   => HasMap c f
-  -- -------------
-  -- constIdentity
-  -- -------------
-  => ObjectOf c (c (c v1 v1) (c v0 (c v1 v1))) -- #0
-  -- -----------------
-  -- evalConstIdentity
-  -- -----------------
-  => ObjectOf c v0                             -- #1
-  => ObjectOf c v1                             -- #2
-  => ObjectOf c (c v1 v1)                      -- #3
-  => ObjectOf c (c v0 (c v1 v1))               -- #4
-  -- -------
-  -- APPLY f
-  -- -------
-  => ObjectOf c (f (c v1 v1))                  -- #5. #3
-  => ObjectOf c (f (c v0 (c v1 v1)))           -- #6. #4
-  -- ------
-  -- OUTPUT
-  -- ------
-  => ObjectOf c (f v0)                         -- #7
-  => ObjectOf c (f v1)                         -- #8
-  => ObjectOf c (c (f v1) (f v1))              -- #9
-  -- -------------
-  -- INVERSE apply
-  -- -------------
-  => ObjectOf c (c (f v0) (f (c v1 v1)))       -- #10. #6
-  -- -------------
+  => ObjectOf c v0
+  => ObjectOf c v1
+  => ObjectOf c (f v0)
+  => ObjectOf c (f v1)
+  => ObjectOf c (c v1 v1)
+  => ObjectOf c (f (c v1 v1))
+  => ObjectOf c (c v0 (c v1 v1))
+  => ObjectOf c (c (f v1) (f v1))
+  => ObjectOf c (f (c v0 (c v1 v1)))
+  => ObjectOf c (c (f v0) (f (c v1 v1)))
+  => ObjectOf c (c (c v1 v1) (c v0 (c v1 v1)))
   => Restrictable Function c
   => Slackable c
   => f v0
@@ -212,8 +111,11 @@ lift2
   => Slackable c
   => c v0 (c v1 v2)
   -> c (f v0) (c (f v1) (f v2))
-lift2 f = restrict \x0 -> restrict \x1 ->
-  slacken (apply (slacken (map f) x0)) x1
+lift2 f =
+  restrict \x0 ->
+    restrict \x1 ->
+      slacken (apply (
+        slacken (map f) x0)) x1
 
 lift3
   :: forall c f v0 v1 v2 v3
@@ -390,33 +292,3 @@ lift5 f =
 
 instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
   apply = Unrestricted.apply
-
-
-
-
-
-
---
--- if c := (->)
---
---    f (c0 v0 v1)            -> c1 (f v0) (f v1)
---    |
---    | uncurry c1
---    v
--- t1 (f (c0 v0 v1)) (f v0)   ->           f v1
---    |
---    | semimonoidal f
---    v
--- f (t1 (c0 v0 v1) v0)       ->           f v1
---    |
---    | map eval 1/0?     [map (slacken eval) -- slacken isn't necessary]
---    v
--- f (v1)                    ->           f v1
---
---
--- HasApply maps from category c to category (->)
---   so currying and uncurrying are possible
---
---         eval :: forall v0 v1.   c (t (c v0 v1) v0)      v1
--- slacken eval :: forall v0 v1.      t (c v0 v1) v0  ->   v1
--- map     eval :: forall f v0 v1. f (t (c v0 v1) v0) -> f v1

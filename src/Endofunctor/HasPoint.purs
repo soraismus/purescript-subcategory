@@ -6,7 +6,6 @@ module Control.Subcategory.Endofunctor.HasPoint
 
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasIdentity (class HasIdentity)
-import Control.Subcategory.HasTerminate (class HasTerminate)
 import Control.Subcategory.HasUnit (class HasUnit)
 import Control.Subcategory.Profunctor.HasDimap (class HasDimap, throughUnit)
 import Control.Subcategory.Restrictable (restrict)
@@ -33,7 +32,6 @@ const
    . HasDimap c c
   => HasIdentity c
   => HasPoint c u
-  => HasTerminate c u
   => HasUnit c u
   => ObjectOf c v0
   => ObjectOf c v1
