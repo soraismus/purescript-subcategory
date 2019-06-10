@@ -5,7 +5,6 @@ module Control.Subcategory.ClosedSemimonoidal
 import Control.Subcategory.Closed (class Closed)
 import Control.Subcategory.HasCurry (class HasCurry)
 import Control.Subcategory.HasUncurry (class HasUncurry)
-import Data.Tuple (Tuple)
 
 class
   ( Closed c
@@ -14,5 +13,9 @@ class
   )
   <= ClosedSemimonoidal c tensor
 
-instance closedSemimonoidalFunction
-  :: ClosedSemimonoidal Function Tuple
+instance closedSemimonoidal
+  :: ( Closed c
+     , HasCurry c tensor c
+     , HasUncurry c tensor c
+     )
+  => ClosedSemimonoidal c tensor

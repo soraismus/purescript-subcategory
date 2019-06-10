@@ -11,6 +11,14 @@ import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.HasCurry (class HasCurry, curry)
 import Control.Subcategory.HasUncurry (class HasUncurry, uncurry)
 
+class (HasToLeft c0 c1 l r, HasToRight c0 c1 l r) <= Adjoint c0 c1 l r
+
+instance adjoint
+  :: ( HasToLeft c0 c1 l r
+     , HasToRight c0 c1 l r
+     )
+  => Adjoint c0 c1 l r
+
 class HasToLeft
   (c0 :: Type -> Type -> Type)
   (c1 :: Type -> Type -> Type)
@@ -26,6 +34,14 @@ class HasToLeft
     => c1 v0 (r v1)
     -> c0 (l v0) v1
 
+instance hasToLeftHasUncurry
+  :: ( HasUncurry c tensor exp
+     , ObjectOf c v
+     )
+  => HasToLeft c c (tensor v) (exp v)
+  where
+  toLeft = uncurry
+
 class HasToRight
   (c0 :: Type -> Type -> Type)
   (c1 :: Type -> Type -> Type)
@@ -40,16 +56,6 @@ class HasToRight
     => ObjectOf c1 (r v1)
     => c0 (l v0) v1
     -> c1 v0 (r v1)
-
-class (HasToLeft c0 c1 l r, HasToRight c0 c1 l r) <= Adjoint c0 c1 l r
-
-instance hasToLeftHasUncurry
-  :: ( HasUncurry c tensor exp
-     , ObjectOf c v
-     )
-  => HasToLeft c c (tensor v) (exp v)
-  where
-  toLeft = uncurry
 
 instance hasToRightHasCurry
   :: ( HasCurry c tensor exp
