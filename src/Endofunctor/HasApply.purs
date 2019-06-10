@@ -26,6 +26,9 @@ class HasApply c f where
     => f (c v0 v1)
     -> c (f v0) (f v1)
 
+instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
+  apply = Unrestricted.apply
+
 applyFirst
   :: forall c f v0 v1
    . HasApply c f
@@ -289,6 +292,3 @@ lift5 f =
                 slacken (apply (
                   slacken (apply (
                     slacken (map f) x0)) x1)) x2)) x3)) x4
-
-instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
-  apply = Unrestricted.apply
