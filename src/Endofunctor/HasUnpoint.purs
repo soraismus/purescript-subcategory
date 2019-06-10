@@ -23,8 +23,8 @@ class
         => c u v
         -> v
 
-instance hasUnpointFn :: HasUnpoint Function Unit where
-  unpoint f = f Unit.unit
-
 instance hasUnpointBuilder :: HasUnpoint Builder (Record ()) where
   unpoint builder = slacken builder {}
+
+instance hasUnpointFn :: HasUnpoint Function Unit where
+  unpoint f = f Unit.unit

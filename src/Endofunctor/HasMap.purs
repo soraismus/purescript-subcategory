@@ -1,5 +1,6 @@
 module Control.Subcategory.Endofunctor.HasMap
   ( class HasMap
+  , flap
   , map
   ) where
 
@@ -41,8 +42,6 @@ flap ff = restrict \x -> slacken (map (slacken consume x)) ff
   where
   consume :: c v0 (c (c v0 v1) v1)
   consume = restrict \x -> restrict \f -> slacken f x
-
-infixl 4 flap as <@>
 
 instance hasMapUnrestricted
   :: Unrestricted.Functor f
