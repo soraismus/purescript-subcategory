@@ -3,16 +3,16 @@ module Control.Subcategory.ClosedMonoidal
   ) where
 
 import Control.Subcategory.ClosedSemimonoidal (class ClosedSemimonoidal)
-import Control.Subcategory.HasExtrinsicUnit (class HasExtrinsicUnit)
+import Control.Subcategory.HasTUnit (class HasTUnit)
 
 class
-  ( ClosedSemimonoidal c tensor
-  , HasExtrinsicUnit c u0 u1
+  ( ClosedSemimonoidal c t
+  , HasTUnit c t u0 u1
   )
-  <= ClosedMonoidal c tensor u0 u1
+    <= ClosedMonoidal c t u0 u1
 
 instance closedMonoidal
-  :: ( ClosedSemimonoidal c tensor
-     , HasExtrinsicUnit c u0 u1
+  :: ( ClosedSemimonoidal c t
+     , HasTUnit c t u0 u1
      )
-  => ClosedMonoidal c tensor u0 u1
+  => ClosedMonoidal c t u0 u1

@@ -8,7 +8,7 @@ module Control.Subcategory.Endofunctor.HasPure
 
 import Control.Applicative (class Applicative, pure) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
-import Control.Subcategory.Endofunctor.HasPoint (class HasPoint, point)
+import Control.Subcategory.Endofunctor.HasUnpoint (class HasUnpoint, unpoint)
 import Control.Subcategory.HasUnit (class HasUnit)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Data.Function (const) as Function
@@ -41,27 +41,26 @@ else instance hasPure
 
 unless
   :: forall c f u
-   . HasPoint c u
-  => HasPure c f
+   . HasPure c f
   => HasUnit c u
+  => HasUnpoint c u
   => ObjectOf c u
   => ObjectOf c (f u)
   => Restrictable Function c
   => Boolean
   -> c (f u) (f u)
+unless true  = restrict \_ -> unpoint (pure :: c u (f u))
 unless false = restrict \fu -> fu
-unless true  = restrict \_ -> point (pure :: c u (f u))
-
 
 when
   :: forall c f u
-   . HasPoint c u
-  => HasPure c f
+   . HasPure c f
   => HasUnit c u
+  => HasUnpoint c u
   => ObjectOf c u
   => ObjectOf c (f u)
   => Restrictable Function c
   => Boolean
   -> c (f u) (f u)
 when true  = restrict \fu -> fu
-when false = restrict \_ -> point (pure :: c u (f u))
+when false = restrict \_ -> unpoint (pure :: c u (f u))
