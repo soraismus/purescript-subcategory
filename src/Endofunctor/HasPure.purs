@@ -7,10 +7,9 @@ module Control.Subcategory.Endofunctor.HasPure
   ) where
 
 import Control.Applicative (class Applicative, pure) as Unrestricted
-import Control.Category (class Category, identity) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
 import Control.Subcategory.Endofunctor.HasPoint (class HasPoint, point)
-import Control.Subcategory.HasUnit (class HasUnit, unit')
+import Control.Subcategory.HasUnit (class HasUnit)
 import Control.Subcategory.Restrictable (class Restrictable, restrict)
 import Data.Function (const) as Function
 import Type.Proxy (Proxy3(Proxy3))

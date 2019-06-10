@@ -59,6 +59,15 @@ applyFirst
   => Slackable c
   => c (f v0) (c (f v1) (f v0))
 applyFirst = apply (map const)
+  where
+  const' :: c v0 (c v1 v0)
+  const' = const
+  mapConst :: c (f v0) (f (c v1 v0))
+  mapConst = map const'
+  applyMapConst :: f (c v0 (c v1 v0))
+  applyMapConst = apply mapConst
+--     => f (c v0 v1)
+--     -> c (f v0) (f v1)
 
 applyFirst'
   :: forall c f v0 v1
