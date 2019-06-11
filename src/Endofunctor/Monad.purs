@@ -110,8 +110,3 @@ unlessM mCond =
     slacken' c (unless cond) mu
   where
   c = Proxy3 :: Proxy3 c
-
--- unlessM :: forall m. Monad m => m Boolean -> m Unit -> m Unit
--- unlessM mv1 m =  do
---   v1 <- mv1
---   unless v1 m
