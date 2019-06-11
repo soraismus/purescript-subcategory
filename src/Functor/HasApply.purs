@@ -11,7 +11,11 @@ module Control.Subcategory.Functor.HasApply
 
 import Control.Apply (class Apply, apply) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
-import Control.Subcategory.Functor.HasConst (class HasConst, const, const')
+import Control.Subcategory.Endofunctor.HasConst
+  ( class HasConst
+  , const
+  ) as Endofunctor
+import Control.Subcategory.Functor.HasConst (class HasConst, const) as Functor
 import Control.Subcategory.Functor.HasMap (class HasMap, map, (<$>))
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
 
@@ -33,7 +37,7 @@ instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
 applyFirst
   :: forall c f v0 v1
    . HasApply c f
-  => HasConst c
+  => Endofunctor.HasConst c
   => HasMap c f
   => ObjectOf c v0
   => ObjectOf c v1
@@ -44,14 +48,14 @@ applyFirst
 applyFirst x0 x1 = apply constX0 x1
   where
   constX0 :: f (c v1 v0)
-  constX0 = const' <$> x0
+  constX0 = Endofunctor.const <$> x0
 
 infixl 4 applyFirst as <*
 
 applySecond
   :: forall c f v0 v1
    . HasApply c f
-  => HasConst c
+  => Functor.HasConst c
   => HasIdentity c
   => HasMap c f
   => ObjectOf c v0
@@ -66,7 +70,7 @@ applySecond x0 x1 =
     apply (map evalConstIdentity x0) x1
   where
   evalConstIdentity :: c v0 (c v1 v1)
-  evalConstIdentity = const identity
+  evalConstIdentity = Functor.const identity
 
 infixl 4 applySecond as *>
 
