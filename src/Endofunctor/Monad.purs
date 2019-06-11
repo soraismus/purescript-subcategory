@@ -32,15 +32,15 @@ ap
   => m (c v0 v1)
   -> c (m v0) (m v1)
 ap mf =
-  restrict \mv0 ->
-      callOn mf
-        $ slacken' (Proxy3 :: Proxy3 c) $ bindFlipped
-        $ restrict \f ->
-              callOn mv0
-                $ slacken' (Proxy3 :: Proxy3 c) $ bindFlipped
-                $ restrict \v0 ->
-                      callOn (slacken f v0)
-                        $ slacken $ pure' (Proxy3 :: Proxy3 c)
+  restrict \mv0 -> callOn mf $ slack $ bindFlipped
+    $ restrict \f -> callOn mv0 $ slack $ bindFlipped
+        $ restrict \v0 ->
+            callOn (slacken f v0)
+              $ slacken $ pure' (Proxy3 :: Proxy3 c)
+
+  where
+  slack :: forall v v'. ObjectOf c v => ObjectOf c v' => c v v' -> v -> v'
+  slack = slacken' (Proxy3 :: Proxy3 c)
 
 -- ap :: forall m a b. Monad m => m (a -> b) -> m a -> m b
 -- ap f a = do
