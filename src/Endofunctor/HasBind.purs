@@ -25,6 +25,12 @@ class HasBind c m where
     => c v0 (m v1)
     -> c (m v0) (m v1)
 
+instance bindUnrestricted
+  :: Unrestricted.Bind m
+  => HasBind Function m
+  where
+  bindFlipped = Unrestricted.bindFlipped
+
 bind
   :: forall c m v0 v1
    . HasBind c m
@@ -39,23 +45,6 @@ bind
 bind mx0 =
   restrict \f ->
     slacken (bindFlipped f) mx0
-
-instance bindUnrestricted
-  :: Unrestricted.Bind m
-  => HasBind Function m
-  where
-  bindFlipped = Unrestricted.bindFlipped
-
-join
-  :: forall c m v
-   . HasBind c m
-  => HasPure c m
-  => ObjectOf c v
-  => ObjectOf c (m v)
-  => ObjectOf c (m (m v))
-  => c (m (m v)) (m v)
-join =
-  bindFlipped (bindFlipped (pure' (Proxy3 :: Proxy3 c)))
 
 composeKleisli
   :: forall c m v0 v1 v2
@@ -107,3 +96,14 @@ ifM mCond =
           predicate :: c Boolean (m v)
           predicate = restrict (if _ then mt else mf)
         in slacken (bindFlipped predicate) mCond
+
+join
+  :: forall c m v
+   . HasBind c m
+  => HasPure c m
+  => ObjectOf c v
+  => ObjectOf c (m v)
+  => ObjectOf c (m (m v))
+  => c (m (m v)) (m v)
+join =
+  bindFlipped (bindFlipped (pure' (Proxy3 :: Proxy3 c)))

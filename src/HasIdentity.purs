@@ -10,8 +10,8 @@ import Record.Builder (Builder)
 class HasIdentity (c :: Type -> Type -> Type) where
   identity :: forall a. ObjectOf c a => c a a
 
-instance hasIdentityFn :: HasIdentity Function where
+instance hasIdentityBuilder :: HasIdentity Builder where
   identity = Unrestricted.identity
 
-instance hasIdentityBuilder :: HasIdentity Builder where
+instance hasIdentityFn :: HasIdentity Function where
   identity = Unrestricted.identity

@@ -23,6 +23,22 @@ class HasMap
     => c v0 v1
     -> c (f v0) (f v1)
 
+instance hasMapUnrestricted
+  :: Unrestricted.Functor f
+  => HasMap Function f
+  where
+  map = Unrestricted.map
+else instance hasMapFixedSourceArrow
+  :: ( ObjectOf c v
+     , ObjectOf c v'
+     , ObjectOf c (c v v')
+     , Restrictable Function c
+     , HasCompose c
+     )
+  => HasMap c (c v)
+  where
+  map f' = restrict \f -> f >>> f'
+
 flap
   :: forall c f v0 v1
    . HasMap c f
@@ -42,19 +58,3 @@ flap ff = restrict \x -> slacken (map (slacken consume x)) ff
   where
   consume :: c v0 (c (c v0 v1) v1)
   consume = restrict \x -> restrict \f -> slacken f x
-
-instance hasMapUnrestricted
-  :: Unrestricted.Functor f
-  => HasMap Function f
-  where
-  map = Unrestricted.map
-else instance hasMapFixedSourceArrow
-  :: ( ObjectOf c v
-     , ObjectOf c v'
-     , ObjectOf c (c v v')
-     , Restrictable Function c
-     , HasCompose c
-     )
-  => HasMap c (c v)
-  where
-  map f' = restrict \f -> f >>> f'

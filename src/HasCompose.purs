@@ -33,8 +33,8 @@ composeFlipped f g = compose g f
 
 infixr 9 composeFlipped as >>>
 
-instance hasComposeFn :: HasCompose Function where
+instance hasComposeBuilder :: HasCompose Builder where
   compose = Unrestricted.compose
 
-instance hasComposeBuilder :: HasCompose Builder where
+instance hasComposeFn :: HasCompose Function where
   compose = Unrestricted.compose

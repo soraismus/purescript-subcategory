@@ -11,10 +11,9 @@ module Control.Subcategory.Functor.HasApply
 
 import Control.Apply (class Apply, apply) as Unrestricted
 import Control.Subcategory.Constituency (class ObjectOf)
-import Control.Subcategory.Functor.HasConst (class HasConst, const)
+import Control.Subcategory.Functor.HasConst (class HasConst, const, const')
 import Control.Subcategory.Functor.HasMap (class HasMap, map, (<$>))
 import Control.Subcategory.HasIdentity (class HasIdentity, identity)
-import Control.Subcategory.Slackable (class Slackable, slacken)
 
 class HasApply c f where
   apply
@@ -27,6 +26,9 @@ class HasApply c f where
     -> f v1
 
 infixl 4 apply as <*>
+
+instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
+  apply = Unrestricted.apply
 
 applyFirst
   :: forall c f v0 v1
@@ -42,7 +44,7 @@ applyFirst
 applyFirst x0 x1 = apply constX0 x1
   where
   constX0 :: f (c v1 v0)
-  constX0 = const <$> x0
+  constX0 = const' <$> x0
 
 infixl 4 applyFirst as <*
 
@@ -50,7 +52,6 @@ applySecond
   :: forall c f v0 v1
    . HasApply c f
   => HasConst c
-  => Slackable c
   => HasIdentity c
   => HasMap c f
   => ObjectOf c v0
@@ -65,7 +66,7 @@ applySecond x0 x1 =
     apply (map evalConstIdentity x0) x1
   where
   evalConstIdentity :: c v0 (c v1 v1)
-  evalConstIdentity = slacken const identity
+  evalConstIdentity = const identity
 
 infixl 4 applySecond as *>
 
@@ -142,6 +143,3 @@ lift5
   -> f v4
   -> f v5
 lift5 f x0 x1 x2 x3 x4 = f <$> x0 <*> x1 <*> x2 <*> x3 <*> x4
-
-instance applyUnrestricted :: Unrestricted.Apply f => HasApply Function f where
-  apply = Unrestricted.apply

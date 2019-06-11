@@ -31,11 +31,6 @@ slacken
   -> v1
 slacken = slacken' (Proxy3 :: Proxy3 c)
 
-
-
-instance slackableFn :: Slackable Function where
-  slacken' _ = Function.apply
-
 instance slackableBuilder :: Slackable Builder where
   slacken' _ builder record = coerceBuild Builder.build builder record
     where
@@ -51,3 +46,6 @@ instance slackableBuilder :: Slackable Builder where
             -> a
             -> b)
     coerceBuild = unsafeCoerce
+
+instance slackableFn :: Slackable Function where
+  slacken' _ = Function.apply

@@ -17,14 +17,6 @@ import Type.Proxy (Proxy3(Proxy3))
 class HasPure c f where
   pure' :: forall v. ObjectOf c v => ObjectOf c (f v) => Proxy3 c -> c v (f v)
 
-pure
-  :: forall c f v
-   . HasPure c f
-  => ObjectOf c v
-  => ObjectOf c (f v)
-  => c v (f v)
-pure = pure' (Proxy3 :: Proxy3 c)
-
 instance hasPureUnrestricted
   :: Unrestricted.Applicative f
   => HasPure Function f
@@ -38,6 +30,14 @@ else instance hasPure
   => HasPure c (c v)
   where
   pure' _ = restrict \x -> restrict (Function.const x)
+
+pure
+  :: forall c f v
+   . HasPure c f
+  => ObjectOf c v
+  => ObjectOf c (f v)
+  => c v (f v)
+pure = pure' (Proxy3 :: Proxy3 c)
 
 unless
   :: forall c f u

@@ -27,8 +27,8 @@ terminate
   => c v u
 terminate = terminate' (Proxy3 :: Proxy3 c)
 
-instance hasTerminateFn :: HasTerminate Function Unit where
-  terminate' _ _ = Unit.unit
-
 instance hasTerminateBuilder :: HasTerminate Builder (Record ()) where
   terminate' _ = restrict (\_ -> {})
+
+instance hasTerminateFn :: HasTerminate Function Unit where
+  terminate' _ _ = Unit.unit

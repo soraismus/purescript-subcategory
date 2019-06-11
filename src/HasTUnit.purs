@@ -34,8 +34,8 @@ tUnit
   -> u1
 tUnit = tUnit' (Proxy3 :: Proxy3 c) (Proxy3 :: Proxy3 bf)
 
-instance hasTUnitFnTuple :: HasTUnit Function Tuple Unit Unit where
-  tUnit' _ _ = Function.identity
-
 instance hasTUnitFnEither :: HasTUnit Function Either Void Unit where
   tUnit' _ _ _ = Unit.unit
+
+instance hasTUnitFnTuple :: HasTUnit Function Tuple Unit Unit where
+  tUnit' _ _ = Function.identity

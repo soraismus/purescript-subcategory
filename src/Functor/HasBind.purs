@@ -29,6 +29,12 @@ class HasBind c m where
 
 infixl 1 bind as >>=
 
+instance bindUnrestricted
+  :: Unrestricted.Bind m
+  => HasBind Function m
+  where
+  bind = Unrestricted.bind
+
 bind'
   :: forall c m v0 v1
    . HasBind c m
@@ -56,24 +62,6 @@ bindFlipped
 bindFlipped = flip bind
 
 infixr 1 bindFlipped as =<<
-
-instance bindUnrestricted
-  :: Unrestricted.Bind m
-  => HasBind Function m
-  where
-  bind = Unrestricted.bind
-
-join
-  :: forall c m v
-   . HasBind c m
-  => HasIdentity c
-  => ObjectOf c (m v)
-  => m (m v)
-  -> m v
-join m = bindM identity
-  where
-  bindM :: c (m v) (m v) -> m v
-  bindM = bind m
 
 composeKleisli
   :: forall c m v0 v1 v2
@@ -124,3 +112,15 @@ ifM mCond mt mf =
   where
   bindCond :: c Boolean (m v) -> m v
   bindCond = bind mCond
+
+join
+  :: forall c m v
+   . HasBind c m
+  => HasIdentity c
+  => ObjectOf c (m v)
+  => m (m v)
+  -> m v
+join m = bindM identity
+  where
+  bindM :: c (m v) (m v) -> m v
+  bindM = bind m

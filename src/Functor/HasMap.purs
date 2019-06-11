@@ -23,17 +23,11 @@ class HasMap
 
 infixl 4 map as <$>
 
-mapFlipped
-  :: forall c f v0 v1
-   . HasMap c f
-  => ObjectOf c v0
-  => ObjectOf c v1
-  => f v0
-  -> c v0 v1
-  -> f v1
-mapFlipped fa f = f <$> fa
-
-infixl 1 mapFlipped as <#>
+instance hasMapUnrestricted
+  :: Unrestricted.Functor f
+  => HasMap Function f
+  where
+  map = Unrestricted.map
 
 flap
   :: forall c f v0 v1
@@ -53,8 +47,14 @@ flap ff x = map consumeX ff
 
 infixl 4 flap as <@>
 
-instance hasMapUnrestricted
-  :: Unrestricted.Functor f
-  => HasMap Function f
-  where
-  map = Unrestricted.map
+mapFlipped
+  :: forall c f v0 v1
+   . HasMap c f
+  => ObjectOf c v0
+  => ObjectOf c v1
+  => f v0
+  -> c v0 v1
+  -> f v1
+mapFlipped fa f = f <$> fa
+
+infixl 1 mapFlipped as <#>

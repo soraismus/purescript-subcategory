@@ -1,6 +1,7 @@
 module Control.Subcategory.Functor.HasConst
   ( class HasConst
   , const
+  , const'
   ) where
 
 import Control.Subcategory.Constituency (class ObjectOf)
@@ -13,6 +14,12 @@ class HasConst (c :: Type -> Type -> Type) where
     :: forall v0 v1
      . ObjectOf c v0
     => ObjectOf c v1
+    => v0
+    -> c v1 v0
+  const'
+    :: forall v0 v1
+     . ObjectOf c v0
+    => ObjectOf c v1
     => ObjectOf c (c v1 v0)
     => c v0 (c v1 v0)
 
@@ -22,4 +29,5 @@ instance constRestrictableFixedSourceArrow
      )
   => HasConst c
   where
-  const = restrict \v -> pure' (Proxy3 :: Proxy3 c) v
+  const v = pure' (Proxy3 :: Proxy3 c) v
+  const' = restrict \v -> pure' (Proxy3 :: Proxy3 c) v

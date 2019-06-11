@@ -24,7 +24,7 @@ instance hasPureUnrestricted
   where
   pure' _ = Unrestricted.pure
 
-else instance hasPure
+else instance hasPureRestrictable
   :: ( ObjectOf c v
      , Restrictable Function c
      )
